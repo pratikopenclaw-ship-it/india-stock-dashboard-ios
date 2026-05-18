@@ -1,0 +1,139 @@
+//
+//  AuthView.swift
+//  ISDStockDashboard
+//
+
+import SwiftUI
+
+struct AuthView: View {
+    @EnvironmentObject var authManager: AuthManager
+    @State private var username = ""
+    @State private var password = ""
+    @State private var isRegistering = false
+    @State private var email = ""
+    @State private var fullName = ""
+
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                Color.isdBackground
+                    .ignoresSafeArea()
+
+                VStack(spacing: 24) {
+                    // Logo
+                    VStack(spacing: 12) {
+                        Image(systemName: "chart.line.uptrend.xyaxis")
+                            .font(.system(size: 64))
+                            .foregroundColor(.isdGreen)
+
+                        Text("India Stock Dashboard")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .foregroundColor(.isdTextPrimary)
+
+                        Text(isRegistering ? "Create your account" : "Sign in to continue")
+                            .font(.subheadline)
+                            .foregroundColor(.isdTextSecondary)
+                    }
+                    .padding(.top, 40)
+
+                    // Form
+                    VStack(spacing: 16) {
+                        TextField("Username", text: $username)
+                            .textContentType(.username)
+                            .autocapitalization(.none)
+                            .padding()
+                            .background(Color.isdCard)
+                            .foregroundColor(.isdTextPrimary)
+                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
+                            .cornerRadius(6)
+
+                        if isRegistering {
+                            TextField("Email", text: $email)
+                                .textContentType(.emailAddress)
+                                .keyboardType(.emailAddress)
+                                .autocapitalization(.none)
+                                .padding()
+                                .background(Color.isdCard)
+                                .foregroundColor(.isdTextPrimary)
+                                .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
+                                .cornerRadius(6)
+
+                            TextField("Full Name", text: $fullName)
+                                .textContentType(.name)
+                                .padding()
+                                .background(Color.isdCard)
+                                .foregroundColor(.isdTextPrimary)
+                                .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
+                                .cornerRadius(6)
+                        }
+
+                        SecureField("Password", text: $password)
+                            .textContentType(.password)
+                            .padding()
+                            .background(Color.isdCard)
+                            .foregroundColor(.isdTextPrimary)
+                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
+                            .cornerRadius(6)
+                    }
+
+                    if let error = authManager.errorMessage {
+                        Text(error)
+                            .font(.caption)
+                            .foregroundColor(.isdRed)
+                            .multilineTextAlignment(.center)
+                    }
+
+                    Button {
+                        Task {
+                            if isRegistering {
+                                // Registration not implemented in API client yet
+                            } else {
+                                await authManager.login(username: username, password: password)
+                            }
+                        }
+                    } label: {
+                        HStack {
+                            if authManager.isLoading {
+                                ProgressView()
+                                    .tint(.white)
+                            }
+                            Text(isRegistering ? "Create Account" : "Sign In")
+                                .fontWeight(.semibold)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.isdAccent)
+                        .foregroundStyle(.white)
+                        .cornerRadius(6)
+                    }
+                    .disabled(username.isEmpty || password.isEmpty || authManager.isLoading)
+
+                    // Demo credentials
+                    VStack(spacing: 4) {
+                        Text("DEMO CREDENTIALS")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundColor(.isdTextMuted)
+                            .tracking(0.5)
+                        Text("User: demo / demo123")
+                            .font(.caption2)
+                            .foregroundColor(.isdTextSecondary)
+                        Text("Admin: admin / admin123")
+                            .font(.caption2)
+                            .foregroundColor(.isdTextSecondary)
+                    }
+                    .padding(.top, 8)
+
+                    Spacer()
+                }
+                .padding(.horizontal, 24)
+            }
+        }
+    }
+}
+
+#Preview {
+    AuthView()
+        .environmentObject(AuthManager())
+}
