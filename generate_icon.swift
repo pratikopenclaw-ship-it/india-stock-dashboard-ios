@@ -38,20 +38,24 @@ context.drawLinearGradient(gradient, start: CGPoint(x: 0, y: 0), end: CGPoint(x:
 // Reset clip
 context.resetClip()
 
-// Draw chart line
+// Green brand color
 context.setStrokeColor(red: 16/255, green: 185/255, blue: 129/255, alpha: 1)
 context.setLineWidth(48)
 context.setLineCap(.round)
 context.setLineJoin(.round)
 
+// X-axis (baseline near bottom)
+context.move(to: CGPoint(x: 160, y: 260))
+context.addLine(to: CGPoint(x: 980, y: 260))
+context.strokePath()
+
+// Upward-trending chart line (y increases = higher on screen)
 let points = [
-    CGPoint(x: 232, y: 592),
-    CGPoint(x: 332, y: 592),
-    CGPoint(x: 432, y: 472),
-    CGPoint(x: 532, y: 552),
-    CGPoint(x: 632, y: 392),
-    CGPoint(x: 732, y: 432),
-    CGPoint(x: 792, y: 352)
+    CGPoint(x: 200, y: 340),
+    CGPoint(x: 360, y: 340),
+    CGPoint(x: 520, y: 480),
+    CGPoint(x: 680, y: 480),
+    CGPoint(x: 840, y: 620)
 ]
 
 context.move(to: points[0])
@@ -60,21 +64,23 @@ for i in 1..<points.count {
 }
 context.strokePath()
 
-// Draw arrow head as filled triangle + line
+// Arrow stem going up-right from last chart point
+context.move(to: CGPoint(x: 840, y: 620))
+context.addLine(to: CGPoint(x: 960, y: 740))
+context.setStrokeColor(red: 16/255, green: 185/255, blue: 129/255, alpha: 1)
+context.setLineWidth(48)
+context.setLineCap(.round)
+context.strokePath()
+
+// Arrow head pointing up-right (tip higher than base)
 let arrow = CGMutablePath()
-arrow.move(to: CGPoint(x: 712, y: 312))
-arrow.addLine(to: CGPoint(x: 832, y: 312))
-arrow.addLine(to: CGPoint(x: 832, y: 432))
+arrow.move(to: CGPoint(x: 960, y: 860))   // tip (highest point)
+arrow.addLine(to: CGPoint(x: 900, y: 720))  // left base
+arrow.addLine(to: CGPoint(x: 1020, y: 720)) // right base
+arrow.closeSubpath()
 context.addPath(arrow)
 context.setFillColor(red: 16/255, green: 185/255, blue: 129/255, alpha: 1)
 context.fillPath()
-
-// Arrow stem
-context.move(to: CGPoint(x: 712, y: 312))
-context.addLine(to: CGPoint(x: 832, y: 432))
-context.setStrokeColor(red: 16/255, green: 185/255, blue: 129/255, alpha: 1)
-context.setLineWidth(48)
-context.strokePath()
 
 // Get image
 let outputPath = CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "/tmp/app_icon.png"
