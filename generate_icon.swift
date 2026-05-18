@@ -40,22 +40,17 @@ context.resetClip()
 
 // Green brand color
 context.setStrokeColor(red: 16/255, green: 185/255, blue: 129/255, alpha: 1)
-context.setLineWidth(48)
+context.setLineWidth(32)
 context.setLineCap(.round)
 context.setLineJoin(.round)
 
-// X-axis (baseline near bottom)
-context.move(to: CGPoint(x: 160, y: 260))
-context.addLine(to: CGPoint(x: 980, y: 260))
-context.strokePath()
-
-// Upward-trending chart line (y increases = higher on screen)
+// Upward-trending chart line
+// Note: CG bitmap context has y=0 at BOTTOM, so increasing y = higher on screen
 let points = [
-    CGPoint(x: 200, y: 340),
-    CGPoint(x: 360, y: 340),
-    CGPoint(x: 520, y: 480),
-    CGPoint(x: 680, y: 480),
-    CGPoint(x: 840, y: 620)
+    CGPoint(x: 260, y: 340),
+    CGPoint(x: 440, y: 340),
+    CGPoint(x: 620, y: 480),
+    CGPoint(x: 800, y: 480)
 ]
 
 context.move(to: points[0])
@@ -64,19 +59,19 @@ for i in 1..<points.count {
 }
 context.strokePath()
 
-// Arrow stem going up-right from last chart point
-context.move(to: CGPoint(x: 840, y: 620))
-context.addLine(to: CGPoint(x: 960, y: 740))
+// Arrow stem going up-right
+context.move(to: CGPoint(x: 800, y: 480))
+context.addLine(to: CGPoint(x: 940, y: 620))
 context.setStrokeColor(red: 16/255, green: 185/255, blue: 129/255, alpha: 1)
-context.setLineWidth(48)
+context.setLineWidth(32)
 context.setLineCap(.round)
 context.strokePath()
 
-// Arrow head pointing up-right (tip higher than base)
+// Arrow head pointing up-right
 let arrow = CGMutablePath()
-arrow.move(to: CGPoint(x: 960, y: 860))   // tip (highest point)
-arrow.addLine(to: CGPoint(x: 900, y: 720))  // left base
-arrow.addLine(to: CGPoint(x: 1020, y: 720)) // right base
+arrow.move(to: CGPoint(x: 940, y: 720))    // tip (highest)
+arrow.addLine(to: CGPoint(x: 890, y: 620))  // left base
+arrow.addLine(to: CGPoint(x: 990, y: 620)) // right base
 arrow.closeSubpath()
 context.addPath(arrow)
 context.setFillColor(red: 16/255, green: 185/255, blue: 129/255, alpha: 1)
