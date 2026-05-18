@@ -23,6 +23,10 @@
 		8B1A000E1D0000000000000E /* AlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A00001D0000000000000E /* AlertsView.swift */; };
 		8B1A000F1D0000000000000F /* NewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A00001D0000000000000F /* NewsView.swift */; };
 		8B1A00101D00000000000010 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B1A00001D00000000000010 /* Assets.xcassets */; };
+		8B1A00111D00000000000011 /* SignalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A00001D00000000000011 /* SignalsView.swift */; };
+		8B1A00121D00000000000012 /* HoldingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A00001D00000000000012 /* HoldingsView.swift */; };
+		8B1A00131D00000000000013 /* InsiderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A00001D00000000000013 /* InsiderView.swift */; };
+		8B1A00141D00000000000014 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A00001D00000000000014 /* ProfileView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +46,10 @@
 		8B1A00001D0000000000000E /* AlertsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsView.swift; sourceTree = "<group>"; };
 		8B1A00001D0000000000000F /* NewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsView.swift; sourceTree = "<group>"; };
 		8B1A00001D00000000000010 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8B1A00001D00000000000011 /* SignalsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalsView.swift; sourceTree = "<group>"; };
+		8B1A00001D00000000000012 /* HoldingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoldingsView.swift; sourceTree = "<group>"; };
+		8B1A00001D00000000000013 /* InsiderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsiderView.swift; sourceTree = "<group>"; };
+		8B1A00001D00000000000014 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		8B1A00FF1D000000000000FF /* ISDStockDashboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ISDStockDashboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -75,6 +83,10 @@
 				8B1A00001D0000000000000E /* AlertsView.swift */,
 				8B1A00001D0000000000000F /* NewsView.swift */,
 				8B1A00001D00000000000010 /* Assets.xcassets */,
+				8B1A00001D00000000000011 /* SignalsView.swift */,
+				8B1A00001D00000000000012 /* HoldingsView.swift */,
+				8B1A00001D00000000000013 /* InsiderView.swift */,
+				8B1A00001D00000000000014 /* ProfileView.swift */,
 			);
 			path = ISDStockDashboard;
 			sourceTree = "<group>";
@@ -173,6 +185,10 @@
 				8B1A000D1D0000000000000D /* ISDColors.swift in Sources */,
 				8B1A000E1D0000000000000E /* AlertsView.swift in Sources */,
 				8B1A000F1D0000000000000F /* NewsView.swift in Sources */,
+				8B1A00111D00000000000011 /* SignalsView.swift in Sources */,
+				8B1A00121D00000000000012 /* HoldingsView.swift in Sources */,
+				8B1A00131D00000000000013 /* InsiderView.swift in Sources */,
+				8B1A00141D00000000000014 /* ProfileView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -245,6 +245,93 @@ class APIClient: ObservableObject {
         return response["news"] ?? []
     }
 
+    // MARK: - Signals
+
+    func fetchMarketSignals() async throws -> MarketSignalsResponse {
+        let data = try await get("/api/signals/market")
+        let response = try JSONDecoder().decode(MarketSignalsResponse.self, from: data)
+        return response
+    }
+
+    func fetchSignal(for symbol: String) async throws -> TradingSignal {
+        let encoded = symbol.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? symbol
+        let data = try await get("/api/signals/\(encoded)")
+        return try JSONDecoder().decode(TradingSignal.self, from: data)
+    }
+
+    func fetchMarketIntelligence() async throws -> [String: Any] {
+        let data = try await get("/api/signals/market-intelligence")
+        guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+            return [:]
+        }
+        return json
+    }
+
+    // MARK: - Holdings
+
+    func fetchHoldings() async throws -> [UserHolding] {
+        let data = try await get("/api/holdings")
+        return try JSONDecoder().decode([UserHolding].self, from: data)
+    }
+
+    func createHolding(symbol: String, quantity: Double, buyPrice: Double, buyDate: String?, notes: String?) async throws -> UserHolding {
+        struct CreateHoldingRequest: Encodable {
+            let symbol: String
+            let quantity: Double
+            let buy_price: Double
+            let buy_date: String?
+            let notes: String?
+        }
+        let body = CreateHoldingRequest(symbol: symbol.uppercased(), quantity: quantity, buy_price: buyPrice, buy_date: buyDate, notes: notes)
+        let data = try await post("/api/holdings", body: body)
+        return try JSONDecoder().decode(UserHolding.self, from: data)
+    }
+
+    func deleteHolding(symbol: String) async throws {
+        let encoded = symbol.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? symbol
+        _ = try await delete("/api/holdings/\(encoded)")
+    }
+
+    func fetchHoldingsCorrelation() async throws -> CorrelationMatrix {
+        let data = try await get("/api/holdings/correlation")
+        return try JSONDecoder().decode(CorrelationMatrix.self, from: data)
+    }
+
+    // MARK: - Insider Trading
+
+    func fetchInsiderTrades(symbol: String? = nil, transactionType: String? = nil, page: Int = 1, pageSize: Int = 50) async throws -> InsiderTradeListResponse {
+        var components = URLComponents(string: "\(baseURL)/api/insider/trading")!
+        var queryItems: [URLQueryItem] = [URLQueryItem(name: "page", value: String(page)), URLQueryItem(name: "page_size", value: String(pageSize))]
+        if let symbol = symbol { queryItems.append(URLQueryItem(name: "symbol", value: symbol.uppercased())) }
+        if let type = transactionType { queryItems.append(URLQueryItem(name: "transaction_type", value: type)) }
+        components.queryItems = queryItems
+
+        guard let url = components.url else { throw APIError.invalidURL }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        let data = try await performRequest(request)
+        return try JSONDecoder().decode(InsiderTradeListResponse.self, from: data)
+    }
+
+    func fetchPromoterConfidence() async throws -> PromoterConfidenceResponse {
+        let data = try await get("/api/insider/promoter-confidence")
+        return try JSONDecoder().decode(PromoterConfidenceResponse.self, from: data)
+    }
+
+    func fetchInsiderSummary(symbol: String) async throws -> [String: Any] {
+        let encoded = symbol.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? symbol
+        let data = try await get("/api/insider/summary/\(encoded)")
+        guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return [:] }
+        return json
+    }
+
+    // MARK: - Profile
+
+    func fetchUserProfile() async throws -> UserProfile {
+        let data = try await get("/api/auth/me")
+        return try JSONDecoder().decode(UserProfile.self, from: data)
+    }
+
     // MARK: - Generic HTTP Methods
 
     private func get(_ path: String) async throws -> Data {

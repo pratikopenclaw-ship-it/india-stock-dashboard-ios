@@ -138,3 +138,139 @@ struct AlertItem: Codable, Identifiable {
     let is_active: Bool
     let created_at: String
 }
+
+// MARK: - Signals
+
+struct IndicatorScore: Codable {
+    let name: String
+    let score: Double
+    let weight: Double
+}
+
+struct TradingSignal: Codable, Identifiable {
+    var id: String { symbol }
+    let symbol: String
+    let signal: String
+    let confidence: Double
+    let confidence_level: String
+    let direction: String
+    let current_price: Double
+    let timestamp: String
+    let indicators: [IndicatorScore]
+    let recommendation: String
+    let entry_price: Double?
+    let exit_target: Double?
+    let stop_loss: Double?
+    let risk_reward: Double?
+    let time_horizon: String?
+    let news_sentiment_score: Double?
+    let news_sentiment_label: String?
+}
+
+struct MarketSignalsResponse: Codable {
+    let timestamp: String
+    let signals: [TradingSignal]
+    let summary: MarketSignalSummary
+}
+
+struct MarketSignalSummary: Codable {
+    let strong_buy: Int
+    let buy: Int
+    let hold: Int
+    let sell: Int
+    let strong_sell: Int
+    let total: Int
+}
+
+// MARK: - Holdings
+
+struct UserHolding: Codable, Identifiable {
+    let id: String
+    let symbol: String
+    let quantity: Double
+    let buy_price: Double
+    let buy_date: String?
+    let notes: String?
+    let created_at: String
+    let updated_at: String
+}
+
+struct CorrelationMatrix: Codable {
+    let correlations: [CorrelationRow]
+    let sectors: [SectorAllocation]
+    let portfolio_value: Double
+    let concentration_warning: Bool
+    let max_sector_pct: Double
+}
+
+struct CorrelationRow: Codable {
+    let symbol: String
+    let values: [CorrelationValue]
+}
+
+struct CorrelationValue: Codable {
+    let symbol: String
+    let corr: Double?
+}
+
+struct SectorAllocation: Codable {
+    let sector: String
+    let value: Double
+    let pct: Double
+}
+
+// MARK: - Insider Trading
+
+struct InsiderTrade: Codable, Identifiable {
+    let id: Int
+    let symbol: String
+    let company_name: String?
+    let insider_name: String
+    let designation: String
+    let transaction_type: String
+    let transaction_type_display: String?
+    let transaction_date: String
+    let quantity: Double?
+    let price: Double?
+    let value: Double?
+    let exchange: String?
+}
+
+struct InsiderTradeListResponse: Codable {
+    let trades: [InsiderTrade]
+    let total: Int
+    let page: Int
+    let page_size: Int
+}
+
+struct PromoterConfidenceSummary: Codable, Identifiable {
+    var id: String { symbol }
+    let symbol: String
+    let companyName: String
+    let score: Int
+    let signal: String
+    let trendDirection: String
+    let trendPercentage: Double
+}
+
+struct PromoterConfidenceResponse: Codable {
+    let summaries: [PromoterConfidenceSummary]
+}
+
+// MARK: - User Profile
+
+struct UserProfile: Codable {
+    let id: Int
+    let username: String
+    let email: String
+    let full_name: String?
+    let role: String
+    let created_at: String?
+    let updated_at: String?
+}
+
+struct UserPreferences: Codable {
+    let timezone: String?
+    let language: String?
+    let theme: String?
+}
