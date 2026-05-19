@@ -100,7 +100,7 @@ struct AuthView: View {
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color.isdAccent)
-                        .foregroundStyle(.isdTextPrimary)
+                        .foregroundColor(.isdTextPrimary)
                         .cornerRadius(6)
                     }
                     .disabled(username.isEmpty || password.isEmpty || authManager.isLoading)

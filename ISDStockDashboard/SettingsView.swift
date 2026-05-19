@@ -64,7 +64,7 @@ struct SettingsView: View {
                         }
                         .disabled(isSaving)
                         .listRowBackground(Color.isdAccent)
-                        .foregroundStyle(.isdTextPrimary)
+                        .foregroundColor(.isdTextPrimary)
                     }
 
                     if let message = saveMessage {
