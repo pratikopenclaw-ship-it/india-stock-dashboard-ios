@@ -13,10 +13,16 @@ struct ScreenerView: View {
     @State private var selectedFilter: String? = nil
     @State private var selectedSector: String? = nil
     @State private var selectedTab = 0
+    @State private var showingFilters = false
+    @State private var aiScoreMin: Double = 0
+    @State private var sortBy = "composite_score"
+    @State private var sortOptions = ["composite_score", "change_percent", "ai_score", "rsi_14", "pe_ratio"]
+    @State private var page = 1
+    @State private var hasMore = false
 
     private let api = APIClient.shared
     private let filters = ["STRONG_BUY", "BUY", "HOLD", "SELL", "STRONG_SELL"]
-    private let sectors = ["Financials", "IT", "Healthcare", "Energy", "Consumer", "Auto", "Metals"]
+    private let sectors = ["Financials", "IT", "Healthcare", "Energy", "Consumer", "Auto", "Metals", "Real Estate", "Telecom"]
 
     var body: some View {
         NavigationStack {
@@ -46,7 +52,11 @@ struct ScreenerView: View {
                             statsSection(stats: stats)
                         }
                         filterChips
+                        sortBar
                         stocksSection
+                        if hasMore {
+                            loadMoreButton
+                        }
                     }
                 }
                 .listStyle(.plain)
@@ -55,15 +65,28 @@ struct ScreenerView: View {
             .navigationTitle("Screener")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Picker("", selection: $selectedTab) {
-                        Text("AI").tag(0)
-                        Text("All").tag(1)
+                    Button {
+                        showingFilters = true
+                    } label: {
+                        Image(systemName: "line.3.horizontal.decrease.circle")
+                            .foregroundColor(.isdAccent)
                     }
-                    .pickerStyle(.segmented)
-                    .frame(width: 120)
                 }
             }
+            .sheet(isPresented: $showingFilters) {
+                FilterPanel(
+                    sectors: sectors,
+                    selectedSector: $selectedSector,
+                    aiScoreMin: $aiScoreMin,
+                    sortBy: $sortBy,
+                    onApply: {
+                        page = 1
+                        Task { await loadData() }
+                    }
+                )
+            }
             .refreshable {
+                page = 1
                 await loadData()
             }
             .task {
@@ -139,6 +162,48 @@ struct ScreenerView: View {
         }
     }
 
+    private var sortBar: some View {
+        HStack(spacing: 12) {
+            Text("SORT")
+                .font(.system(size: 9, weight: .medium, design: .monospaced))
+                .foregroundColor(.isdTextMuted)
+            Picker("Sort", selection: $sortBy) {
+                ForEach(sortOptions, id: \.self) { option in
+                    Text(formatSortLabel(option)).tag(option)
+                }
+            }
+            .pickerStyle(.menu)
+            .onChange(of: sortBy) { _, _ in
+                page = 1
+                Task { await loadData() }
+            }
+            Spacer()
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .background(Color.isdCard)
+    }
+
+    private var loadMoreButton: some View {
+        Button {
+            page += 1
+            Task { await loadData() }
+        } label: {
+            HStack {
+                if isLoading {
+                    ProgressView().tint(.isdAccent)
+                } else {
+                    Text("Load More")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundColor(.isdAccent)
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .padding()
+        }
+        .disabled(isLoading)
+    }
+
     private func loadData() async {
         isLoading = true
         errorMessage = nil
@@ -147,19 +212,36 @@ struct ScreenerView: View {
             async let stocksTask = api.fetchScreenerStocks(
                 recommendation: selectedFilter,
                 sector: selectedSector,
-                sortBy: selectedTab == 0 ? "composite_score" : "change_percent",
-                page: 1,
+                aiScoreMin: aiScoreMin > 0 ? aiScoreMin : nil,
+                sortBy: sortBy,
+                page: page,
                 limit: 50
             )
             let (statsResult, stocksResult) = try await (statsTask, stocksTask)
             stats = statsResult
-            stocks = stocksResult.data
+            if page == 1 {
+                stocks = stocksResult.data
+            } else {
+                stocks.append(contentsOf: stocksResult.data)
+            }
+            hasMore = stocksResult.pagination.page < stocksResult.pagination.total_pages
         } catch APIError.unauthorized {
             errorMessage = "Please sign in to view screener"
         } catch {
             errorMessage = "Failed to load screener data"
         }
         isLoading = false
+    }
+
+    private func formatSortLabel(_ option: String) -> String {
+        switch option {
+        case "composite_score": return "AI Score"
+        case "change_percent": return "Change %"
+        case "ai_score": return "AI Raw"
+        case "rsi_14": return "RSI"
+        case "pe_ratio": return "P/E"
+        default: return option
+        }
     }
 
     private func recommendationColor(_ rec: String) -> Color {
@@ -271,6 +353,96 @@ struct StatBadge: View {
         .background(color.opacity(0.08))
         .overlay(RoundedRectangle(cornerRadius: 4).stroke(color.opacity(0.25), lineWidth: 1))
         .cornerRadius(4)
+    }
+}
+
+struct FilterPanel: View {
+    let sectors: [String]
+    @Binding var selectedSector: String?
+    @Binding var aiScoreMin: Double
+    @Binding var sortBy: String
+    let onApply: () -> Void
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section("Sector") {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 8) {
+                            Button {
+                                selectedSector = nil
+                            } label: {
+                                Text("All")
+                                    .font(.system(size: 11, weight: .semibold))
+                                    .padding(.horizontal, 10)
+                                    .padding(.vertical, 5)
+                                    .foregroundColor(selectedSector == nil ? .white : .isdAccent)
+                                    .background(selectedSector == nil ? Color.isdAccent : Color.isdAccent.opacity(0.10))
+                                    .cornerRadius(4)
+                            }
+                            ForEach(sectors, id: \.self) { sector in
+                                Button {
+                                    selectedSector = sector
+                                } label: {
+                                    Text(sector)
+                                        .font(.system(size: 11, weight: .semibold))
+                                        .padding(.horizontal, 10)
+                                        .padding(.vertical, 5)
+                                        .foregroundColor(selectedSector == sector ? .white : .isdAccent)
+                                        .background(selectedSector == sector ? Color.isdAccent : Color.isdAccent.opacity(0.10))
+                                        .cornerRadius(4)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Section("AI Score Minimum") {
+                    VStack {
+                        HStack {
+                            Text("0")
+                                .font(.system(size: 11, design: .monospaced))
+                                .foregroundColor(.isdTextMuted)
+                            Spacer()
+                            Text(String(format: "%.0f", aiScoreMin))
+                                .font(.system(size: 15, weight: .bold, design: .monospaced))
+                                .foregroundColor(.isdAccent)
+                            Spacer()
+                            Text("100")
+                                .font(.system(size: 11, design: .monospaced))
+                                .foregroundColor(.isdTextMuted)
+                        }
+                        Slider(value: $aiScoreMin, in: 0...100, step: 1)
+                            .tint(.isdAccent)
+                    }
+                }
+
+                Section("Sort By") {
+                    Picker("Sort", selection: $sortBy) {
+                        Text("AI Score").tag("composite_score")
+                        Text("Change %").tag("change_percent")
+                        Text("AI Raw").tag("ai_score")
+                        Text("RSI").tag("rsi_14")
+                        Text("P/E").tag("pe_ratio")
+                    }
+                    .pickerStyle(.inline)
+                }
+            }
+            .navigationTitle("Filters")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Apply") {
+                        onApply()
+                        dismiss()
+                    }
+                }
+            }
+        }
     }
 }
 
