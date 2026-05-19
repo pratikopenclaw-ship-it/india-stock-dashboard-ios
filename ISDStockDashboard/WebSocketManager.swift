@@ -42,7 +42,7 @@ class WebSocketManager: ObservableObject {
         receiveMessage()
 
         // Subscribe to symbols
-        let subs = ["action": "subscribe", "symbols": symbols]
+        let subs: [String: Any] = ["action": "subscribe", "symbols": symbols]
         if let data = try? JSONSerialization.data(withJSONObject: subs) {
             webSocketTask?.send(.data(data)) { _ in }
         }

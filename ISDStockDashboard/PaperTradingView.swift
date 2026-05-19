@@ -87,16 +87,14 @@ struct PaperTradingView: View {
                 portfolioCard(title: "P&L", value: pf.total_pnl, color: pf.total_pnl >= 0 ? .isdGreen : .isdRed)
             }
 
-            if let pct = pf.pnl_percent {
-                HStack {
-                    Text("P&L %")
-                        .font(.system(size: 10, weight: .medium, design: .monospaced))
-                        .foregroundColor(.isdTextMuted)
-                    Spacer()
-                    Text(String(format: "%.2f%%", pct))
-                        .font(.system(size: 15, weight: .bold, design: .monospaced))
-                        .foregroundStyle(Color.profitLossColor(pct))
-                }
+            HStack {
+                Text("P&L %")
+                    .font(.system(size: 10, weight: .medium, design: .monospaced))
+                    .foregroundColor(.isdTextMuted)
+                Spacer()
+                Text(String(format: "%.2f%%", pf.pnl_percent))
+                    .font(.system(size: 15, weight: .bold, design: .monospaced))
+                    .foregroundStyle(Color.profitLossColor(pf.pnl_percent))
             }
 
             if !pf.positions.isEmpty {
