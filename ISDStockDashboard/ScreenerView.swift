@@ -273,12 +273,13 @@ struct ScreenerRow: View {
 
                     if let rec = stock.recommendation {
                         Text(rec.replacingOccurrences(of: "_", with: " "))
-                            .font(.system(size: 9, weight: .bold, design: .monospaced))
+                            .font(.system(size: 9, weight: .medium, design: .monospaced))
                             .padding(.horizontal, 6)
                             .padding(.vertical, 2)
                             .foregroundColor(recColor(rec))
                             .background(recColor(rec).opacity(0.10))
                             .overlay(RoundedRectangle(cornerRadius: 6).stroke(recColor(rec).opacity(0.30), lineWidth: 1))
+                            .tracking(0.3)
                             .cornerRadius(6)
                     }
 

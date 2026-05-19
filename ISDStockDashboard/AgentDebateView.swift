@@ -156,13 +156,14 @@ struct AgentRecordRow: View {
                             .foregroundColor(.isdTextPrimary)
 
                         Text(record.signal.uppercased())
-                            .font(.system(size: 9, weight: .bold, design: .monospaced))
+                            .font(.system(size: 9, weight: .medium, design: .monospaced))
                             .padding(.horizontal, 6)
                             .padding(.vertical, 2)
                             .foregroundColor(signalColor)
                             .background(signalColor.opacity(0.10))
-                            .overlay(RoundedRectangle(cornerRadius: 4).stroke(signalColor.opacity(0.30), lineWidth: 1))
-                            .cornerRadius(4)
+                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(signalColor.opacity(0.30), lineWidth: 1))
+                            .cornerRadius(6)
+                            .tracking(0.3)
 
                         Spacer()
                     }
@@ -266,13 +267,14 @@ struct RiskRecordRow: View {
                             .font(.system(size: 16, weight: .bold, design: .monospaced))
                             .foregroundColor(.isdTextPrimary)
                         Text("RISK")
-                            .font(.system(size: 9, weight: .bold, design: .monospaced))
+                            .font(.system(size: 9, weight: .medium, design: .monospaced))
                             .padding(.horizontal, 6)
                             .padding(.vertical, 2)
                             .foregroundColor(.isdRed)
                             .background(Color.isdRed.opacity(0.10))
-                            .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color.isdRed.opacity(0.30), lineWidth: 1))
-                            .cornerRadius(4)
+                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdRed.opacity(0.30), lineWidth: 1))
+                            .cornerRadius(6)
+                            .tracking(0.3)
                         Spacer()
                     }
                     Text(record.trade_date)
@@ -348,13 +350,14 @@ struct MemoryRecordRow: View {
                             .font(.system(size: 16, weight: .bold, design: .monospaced))
                             .foregroundColor(.isdTextPrimary)
                         Text("MEMORY")
-                            .font(.system(size: 9, weight: .bold, design: .monospaced))
+                            .font(.system(size: 9, weight: .medium, design: .monospaced))
                             .padding(.horizontal, 6)
                             .padding(.vertical, 2)
                             .foregroundColor(.isdAccent)
                             .background(Color.isdAccent.opacity(0.10))
-                            .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
-                            .cornerRadius(4)
+                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
+                            .cornerRadius(6)
+                            .tracking(0.3)
                         Spacer()
                     }
                     Text(record.trade_date)
@@ -399,8 +402,9 @@ struct MemoryRecordRow: View {
                         }
                         .padding(.vertical, 6)
                         .padding(.horizontal, 8)
-                        .background(Color.isdGold.opacity(0.06))
-                        .cornerRadius(4)
+                        .background(Color.isdGold.opacity(0.10))
+                        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdGold.opacity(0.30), lineWidth: 1))
+                        .cornerRadius(6)
                     }
                 }
                 .padding(.top, 4)
@@ -560,13 +564,14 @@ struct AgentResultCard: View {
 
                     if let signal = result.signal {
                         Text(signal.uppercased())
-                            .font(.system(size: 11, weight: .bold, design: .monospaced))
+                            .font(.system(size: 11, weight: .medium, design: .monospaced))
                             .padding(.horizontal, 8)
                             .padding(.vertical, 3)
                             .foregroundColor(signalColor(signal))
                             .background(signalColor(signal).opacity(0.10))
-                            .overlay(RoundedRectangle(cornerRadius: 4).stroke(signalColor(signal).opacity(0.30), lineWidth: 1))
-                            .cornerRadius(4)
+                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(signalColor(signal).opacity(0.30), lineWidth: 1))
+                            .cornerRadius(6)
+                            .tracking(0.3)
                     }
                 }
 

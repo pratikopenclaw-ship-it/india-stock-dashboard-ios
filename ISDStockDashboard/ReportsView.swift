@@ -82,8 +82,8 @@ struct ReportRow: View {
                         .padding(.vertical, 2)
                         .foregroundColor(ratingColor)
                         .background(ratingColor.opacity(0.10))
-                        .overlay(RoundedRectangle(cornerRadius: 4).stroke(ratingColor.opacity(0.30), lineWidth: 1))
-                        .cornerRadius(4)
+                        .overlay(RoundedRectangle(cornerRadius: 6).stroke(ratingColor.opacity(0.30), lineWidth: 1))
+                        .cornerRadius(6)
                 }
                 Spacer()
             }

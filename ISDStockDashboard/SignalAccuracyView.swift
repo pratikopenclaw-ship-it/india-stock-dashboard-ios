@@ -78,9 +78,9 @@ struct SignalAccuracyView: View {
     private func breakdownSection(_ acc: SignalAccuracyResponse) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("SIGNAL BREAKDOWN")
-                .font(.system(size: 13, weight: .semibold))
+                .font(.system(size: 11, weight: .medium, design: .monospaced))
                 .foregroundColor(.isdTextMuted)
-                .tracking(0.5)
+                .tracking(0.3)
 
             VStack(spacing: 8) {
                 ForEach(Array(acc.signal_breakdown.keys.sorted()), id: \.self) { key in
@@ -111,9 +111,9 @@ struct SignalAccuracyView: View {
     private func recentResultsSection(_ acc: SignalAccuracyResponse) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("RECENT RESULTS")
-                .font(.system(size: 13, weight: .semibold))
+                .font(.system(size: 11, weight: .medium, design: .monospaced))
                 .foregroundColor(.isdTextMuted)
-                .tracking(0.5)
+                .tracking(0.3)
 
             VStack(spacing: 0) {
                 ForEach(acc.recent_results.prefix(10), id: \.ticker) { result in
@@ -157,9 +157,9 @@ struct SignalAccuracyView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12)
-        .background(color.opacity(0.08))
-        .overlay(RoundedRectangle(cornerRadius: 4).stroke(color.opacity(0.25), lineWidth: 1))
-        .cornerRadius(4)
+        .background(color.opacity(0.10))
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(color.opacity(0.30), lineWidth: 1))
+        .cornerRadius(6)
     }
 
     private func accColor(_ acc: Double) -> Color {

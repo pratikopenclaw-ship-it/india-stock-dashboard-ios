@@ -173,7 +173,7 @@ struct SmartMoneyView: View {
             }
         }
         .frame(height: 8)
-        .cornerRadius(4)
+        .cornerRadius(6)
     }
 
     private var bulkDealsSection: some View {
@@ -284,8 +284,9 @@ struct TrendBadge: View {
                 .font(.system(size: 10, weight: .medium, design: .monospaced))
                 .foregroundColor(.isdTextMuted)
             Text(trend.uppercased())
-                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                .font(.system(size: 12, weight: .medium, design: .monospaced))
                 .foregroundColor(trendColor)
+                .tracking(0.3)
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 6)
@@ -315,12 +316,13 @@ struct BulkDealRow: View {
 
                     if let type = deal.deal_type {
                         Text(type.uppercased())
-                            .font(.system(size: 9, weight: .bold, design: .monospaced))
+                            .font(.system(size: 9, weight: .medium, design: .monospaced))
                             .padding(.horizontal, 6)
                             .padding(.vertical, 2)
                             .foregroundColor(.isdAccent)
                             .background(Color.isdAccent.opacity(0.10))
                             .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
+                            .tracking(0.3)
                             .cornerRadius(6)
                     }
 

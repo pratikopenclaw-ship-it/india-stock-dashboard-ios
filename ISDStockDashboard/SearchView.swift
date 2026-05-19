@@ -98,8 +98,8 @@ struct StockSearchRow: View {
                         .padding(.vertical, 2)
                         .background(Color.isdAccent.opacity(0.10))
                         .foregroundColor(.isdAccent)
-                        .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
-                        .cornerRadius(4)
+                        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
+                        .cornerRadius(6)
 
                     if let sector = stock.sector {
                         Text(sector)

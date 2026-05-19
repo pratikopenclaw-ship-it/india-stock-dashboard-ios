@@ -160,9 +160,10 @@ struct PromoterRow: View {
                         .foregroundColor(.isdTextPrimary)
 
                     Text(item.signal.uppercased())
-                        .font(.system(size: 9, weight: .bold, design: .monospaced))
+                        .font(.system(size: 9, weight: .medium, design: .monospaced))
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
+                        .tracking(0.3)
                         .foregroundColor(signalColor)
                         .background(signalColor.opacity(0.10))
                         .overlay(RoundedRectangle(cornerRadius: 6).stroke(signalColor.opacity(0.30), lineWidth: 1))
@@ -221,9 +222,10 @@ struct InsiderTradeRow: View {
                         .foregroundColor(.isdTextPrimary)
 
                     Text(trade.transaction_type.uppercased())
-                        .font(.system(size: 9, weight: .bold, design: .monospaced))
+                        .font(.system(size: 9, weight: .medium, design: .monospaced))
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
+                        .tracking(0.3)
                         .foregroundColor(typeColor)
                         .background(typeColor.opacity(0.10))
                         .overlay(RoundedRectangle(cornerRadius: 6).stroke(typeColor.opacity(0.30), lineWidth: 1))

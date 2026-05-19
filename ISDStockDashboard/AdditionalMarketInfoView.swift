@@ -99,8 +99,8 @@ struct AdditionalMarketInfoView: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12)
         .background(color.opacity(0.10))
-        .overlay(RoundedRectangle(cornerRadius: 4).stroke(color.opacity(0.30), lineWidth: 1))
-        .cornerRadius(4)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(color.opacity(0.30), lineWidth: 1))
+        .cornerRadius(6)
     }
 
     private func loadData() async {

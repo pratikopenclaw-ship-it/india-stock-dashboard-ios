@@ -188,11 +188,12 @@ struct SignalBadge: View {
     var body: some View {
         let (color, label) = badgeProps
         Text(label)
-            .font(.system(size: 9, weight: .bold, design: .monospaced))
+            .font(.system(size: 9, weight: .medium, design: .monospaced))
             .padding(.horizontal, 6)
             .padding(.vertical, 2)
             .foregroundColor(color)
             .background(color.opacity(0.10))
+            .tracking(0.3)
             .overlay(RoundedRectangle(cornerRadius: 6).stroke(color.opacity(0.30), lineWidth: 1))
             .cornerRadius(6)
     }
@@ -269,8 +270,9 @@ struct SignalDetailView: View {
                     SignalBadge(signal: signal.signal)
                     Spacer()
                     Text(String(format: "%.0f%% CONFIDENCE", signal.confidence))
-                        .font(.system(size: 12, weight: .bold, design: .monospaced))
+                        .font(.system(size: 12, weight: .medium, design: .monospaced))
                         .foregroundColor(signalColor)
+                        .tracking(0.3)
                 }
 
                 Text(String(format: "₹%.2f", signal.current_price))

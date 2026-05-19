@@ -96,8 +96,8 @@ struct EventRow: View {
                         .padding(.vertical, 2)
                         .foregroundColor(.isdAccent)
                         .background(Color.isdAccent.opacity(0.10))
-                        .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
-                        .cornerRadius(4)
+                        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
+                        .cornerRadius(6)
                 }
                 if let name = event.company_name {
                     Text(name)
