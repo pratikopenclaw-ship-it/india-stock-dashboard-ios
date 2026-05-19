@@ -238,7 +238,7 @@ struct StockDetailView: View {
                 }
             } else {
                 ForEach(news.prefix(10)) { item in
-                    NewsRow(item: item)
+                    StockNewsRow(item: item)
                 }
             }
         }
@@ -545,7 +545,7 @@ struct StatCard: View {
     }
 }
 
-struct NewsRow: View {
+struct StockNewsRow: View {
     let item: NewsItem
 
     var body: some View {
