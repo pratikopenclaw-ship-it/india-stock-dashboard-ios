@@ -44,8 +44,8 @@ struct AuthView: View {
                             .padding()
                             .background(Color.isdCard)
                             .foregroundColor(.isdTextPrimary)
-                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
                             .cornerRadius(6)
+                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
 
                         if isRegistering {
                             TextField("Email", text: $email)
@@ -54,23 +54,23 @@ struct AuthView: View {
                                 .padding()
                                 .background(Color.isdCard)
                                 .foregroundColor(.isdTextPrimary)
-                                .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
                                 .cornerRadius(6)
+                                .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
 
                             TextField("Full Name", text: $fullName)
                                 .padding()
                                 .background(Color.isdCard)
                                 .foregroundColor(.isdTextPrimary)
-                                .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
                                 .cornerRadius(6)
+                                .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
                         }
 
                         SecureField("Password", text: $password)
                             .padding()
                             .background(Color.isdCard)
                             .foregroundColor(.isdTextPrimary)
-                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
                             .cornerRadius(6)
+                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
                     }
 
                     if let error = authManager.errorMessage {
@@ -92,7 +92,7 @@ struct AuthView: View {
                         HStack {
                             if authManager.isLoading {
                                 ProgressView()
-                                    .tint(.white)
+                                    .tint(.isdTextPrimary)
                             }
                             Text(isRegistering ? "Create Account" : "Sign In")
                                 .fontWeight(.semibold)
@@ -100,7 +100,7 @@ struct AuthView: View {
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color.isdAccent)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.isdTextPrimary)
                         .cornerRadius(6)
                     }
                     .disabled(username.isEmpty || password.isEmpty || authManager.isLoading)
@@ -108,10 +108,9 @@ struct AuthView: View {
                     // Demo credentials
                     VStack(spacing: 4) {
                         Text("DEMO CREDENTIALS")
-                            .font(.caption)
-                            .fontWeight(.medium)
+                            .font(.system(size: 10, weight: .medium, design: .monospaced))
                             .foregroundColor(.isdTextMuted)
-                            .tracking(0.5)
+                            .tracking(0.3)
                         Text("User: demo / demo123")
                             .font(.caption2)
                             .foregroundColor(.isdTextSecondary)

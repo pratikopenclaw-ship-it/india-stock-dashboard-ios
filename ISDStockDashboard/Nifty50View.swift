@@ -62,12 +62,9 @@ struct Nifty50View: View {
                     .foregroundColor(.isdTextPrimary)
             }
             if let change = s.change, let pct = s.change_percent {
-                HStack(spacing: 4) {
-                    Image(systemName: change >= 0 ? "arrow.up" : "arrow.down")
-                    Text(String(format: "%.2f (%.2f%%)", change, pct))
-                }
-                .font(.system(size: 17, weight: .semibold, design: .monospaced))
-                .foregroundStyle(Color.profitLossColor(change))
+                Text(String(format: "%+.2f (%+.2f%%)", change, pct))
+                    .font(.system(size: 17, weight: .semibold, design: .monospaced))
+                    .foregroundStyle(Color.profitLossColor(change))
             }
             if let sentiment = s.sentiment {
                 Text("SENTIMENT: \(sentiment.uppercased())")
@@ -86,15 +83,15 @@ struct Nifty50View: View {
     private func sectorSection(_ sectors: [SectorPerformance]) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("SECTOR PERFORMANCE")
-                .font(.system(size: 13, weight: .semibold))
+                .font(.system(size: 12, weight: .medium, design: .monospaced))
                 .foregroundColor(.isdTextMuted)
-                .tracking(0.5)
+                .tracking(0.3)
 
             VStack(spacing: 8) {
                 ForEach(sectors) { sector in
                     HStack {
-                        Text(sector.sector.uppercased())
-                            .font(.system(size: 12, weight: .medium, design: .monospaced))
+                        Text(sector.sector)
+                            .font(.system(size: 12, weight: .semibold))
                             .foregroundColor(.isdTextPrimary)
 
                         Spacer()
@@ -116,9 +113,9 @@ struct Nifty50View: View {
     private func topMoversSection(title: String, stocks: [StockSearchResult], color: Color) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title)
-                .font(.system(size: 13, weight: .semibold))
+                .font(.system(size: 12, weight: .medium, design: .monospaced))
                 .foregroundColor(.isdTextMuted)
-                .tracking(0.5)
+                .tracking(0.3)
 
             VStack(spacing: 0) {
                 ForEach(stocks.prefix(5)) { stock in
@@ -130,7 +127,7 @@ struct Nifty50View: View {
                         Spacer()
 
                         if let pct = stock.change_percent {
-                            Text(String(format: "%.2f%%", pct))
+                            Text(String(format: "%+.2f%%", pct))
                                 .font(.system(size: 13, weight: .semibold, design: .monospaced))
                                 .foregroundStyle(color)
                         }

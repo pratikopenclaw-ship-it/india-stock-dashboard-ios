@@ -51,6 +51,7 @@ struct WatchlistView: View {
                             NavigationLink(destination: WatchlistDetailView(watchlistId: watchlist.id)) {
                                 WatchlistRow(watchlist: watchlist)
                             }
+                            .listRowSeparator(.hidden)
                         }
                     }
                 }
@@ -71,13 +72,23 @@ struct WatchlistView: View {
             .sheet(isPresented: $showingCreateSheet) {
                 NavigationStack {
                     Form {
-                        Section("Watchlist Name") {
+                        Section {
                             TextField("My Watchlist", text: $newWatchlistName)
                                 .foregroundColor(.isdTextPrimary)
+                        } header: {
+                            Text("WATCHLIST NAME")
+                                .font(.system(size: 10, weight: .medium, design: .monospaced))
+                                .foregroundColor(.isdTextMuted)
+                                .tracking(0.3)
                         }
-                        Section("Description (Optional)") {
+                        Section {
                             TextField("Description", text: $newWatchlistDescription)
                                 .foregroundColor(.isdTextPrimary)
+                        } header: {
+                            Text("DESCRIPTION (OPTIONAL)")
+                                .font(.system(size: 10, weight: .medium, design: .monospaced))
+                                .foregroundColor(.isdTextMuted)
+                                .tracking(0.3)
                         }
                     }
                     .navigationTitle("New Watchlist")
@@ -150,9 +161,10 @@ struct WatchlistRow: View {
                         .padding(.horizontal, 8)
                         .padding(.vertical, 2)
                         .background(Color.isdAccent.opacity(0.10))
-                        .foregroundColor(.isdAccentLight)
-                        .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
-                        .cornerRadius(4)
+                        .foregroundColor(.isdAccent)
+                        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
+                        .cornerRadius(6)
+                        .tracking(0.3)
                 }
 
                 Spacer()
@@ -177,6 +189,8 @@ struct WatchlistRow: View {
         }
         .padding(.vertical, 4)
         .background(Color.isdCard)
+        .cornerRadius(6)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
     }
 }
 
@@ -229,8 +243,14 @@ struct WatchlistDetailView: View {
                                         Text(formattedDate(addedAt))
                                             .font(.system(size: 11, weight: .medium, design: .monospaced))
                                             .foregroundColor(.isdTextMuted)
+                                            .tracking(0.3)
                                     }
                                 }
+                                .padding(.vertical, 8)
+                                .background(Color.isdCard)
+                                .cornerRadius(6)
+                                .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
+                                .listRowSeparator(.hidden)
                             }
                         }
                     } else {

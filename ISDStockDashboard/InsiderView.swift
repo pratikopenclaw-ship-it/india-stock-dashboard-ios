@@ -165,8 +165,8 @@ struct PromoterRow: View {
                         .padding(.vertical, 2)
                         .foregroundColor(signalColor)
                         .background(signalColor.opacity(0.10))
-                        .overlay(RoundedRectangle(cornerRadius: 4).stroke(signalColor.opacity(0.30), lineWidth: 1))
-                        .cornerRadius(4)
+                        .overlay(RoundedRectangle(cornerRadius: 6).stroke(signalColor.opacity(0.30), lineWidth: 1))
+                        .cornerRadius(6)
 
                     Spacer()
                 }
@@ -194,7 +194,10 @@ struct PromoterRow: View {
             }
         }
         .padding(.vertical, 8)
+        .padding(.horizontal, 12)
         .background(Color.isdCard)
+        .cornerRadius(6)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
     }
 
     private var signalColor: Color {
@@ -223,8 +226,8 @@ struct InsiderTradeRow: View {
                         .padding(.vertical, 2)
                         .foregroundColor(typeColor)
                         .background(typeColor.opacity(0.10))
-                        .overlay(RoundedRectangle(cornerRadius: 4).stroke(typeColor.opacity(0.30), lineWidth: 1))
-                        .cornerRadius(4)
+                        .overlay(RoundedRectangle(cornerRadius: 6).stroke(typeColor.opacity(0.30), lineWidth: 1))
+                        .cornerRadius(6)
 
                     Spacer()
                 }
@@ -263,7 +266,10 @@ struct InsiderTradeRow: View {
             }
         }
         .padding(.vertical, 8)
+        .padding(.horizontal, 12)
         .background(Color.isdCard)
+        .cornerRadius(6)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
     }
 
     private var typeColor: Color {

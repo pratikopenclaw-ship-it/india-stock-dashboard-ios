@@ -89,9 +89,9 @@ struct HoldingsView: View {
         return Section {
             VStack(alignment: .leading, spacing: 12) {
                 Text("PORTFOLIO VALUE")
-                    .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                    .font(.system(size: 11, weight: .medium, design: .monospaced))
                     .foregroundColor(.isdTextMuted)
-                    .tracking(0.5)
+                    .tracking(0.3)
 
                 Text(String(format: "₹%.2f", totalValue))
                     .font(.system(size: 28, weight: .bold, design: .monospaced))
@@ -103,27 +103,35 @@ struct HoldingsView: View {
                     .tracking(0.3)
             }
             .padding(.vertical, 8)
+            .padding(.horizontal, 12)
             .background(Color.isdCard)
+            .cornerRadius(6)
+            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
         }
     }
 
     private var holdingsListSection: some View {
-        Section("HOLDINGS") {
+        Section {
             ForEach(holdings) { holding in
                 HoldingRow(holding: holding)
             }
             .onDelete(perform: deleteHoldings)
+        } header: {
+            Text("HOLDINGS")
+                .font(.system(size: 10, weight: .medium, design: .monospaced))
+                .foregroundColor(.isdTextMuted)
+                .tracking(0.3)
         }
     }
 
     private func sectorSection(sectors: [SectorAllocation]) -> some View {
-        Section("SECTOR ALLOCATION") {
+        Section {
             VStack(alignment: .leading, spacing: 8) {
                 ForEach(sectors.prefix(5), id: \.sector) { sector in
                     HStack {
                         Text(sector.sector.uppercased())
                             .font(.system(size: 11, weight: .medium, design: .monospaced))
-                            .foregroundColor(.isdTextSecondary)
+                            .foregroundColor(.isdTextMuted)
 
                         Spacer()
 
@@ -134,12 +142,20 @@ struct HoldingsView: View {
                 }
             }
             .padding(.vertical, 8)
+            .padding(.horizontal, 12)
             .background(Color.isdCard)
+            .cornerRadius(6)
+            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
+        } header: {
+            Text("SECTOR ALLOCATION")
+                .font(.system(size: 10, weight: .medium, design: .monospaced))
+                .foregroundColor(.isdTextMuted)
+                .tracking(0.3)
         }
     }
 
     private func correlationMatrixSection(_ corr: CorrelationMatrix) -> some View {
-        Section("CORRELATION MATRIX") {
+        Section {
             VStack(alignment: .leading, spacing: 8) {
                 let symbols = corr.correlations.map { $0.symbol }
                 let cellWidth: CGFloat = max(50, 280 / CGFloat(max(symbols.count + 1, 2)))
@@ -195,7 +211,15 @@ struct HoldingsView: View {
                 }
             }
             .padding(.vertical, 8)
+            .padding(.horizontal, 12)
             .background(Color.isdCard)
+            .cornerRadius(6)
+            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
+        } header: {
+            Text("CORRELATION MATRIX")
+                .font(.system(size: 10, weight: .medium, design: .monospaced))
+                .foregroundColor(.isdTextMuted)
+                .tracking(0.3)
         }
     }
 
@@ -270,7 +294,10 @@ struct HoldingRow: View {
             }
         }
         .padding(.vertical, 8)
+        .padding(.horizontal, 12)
         .background(Color.isdCard)
+        .cornerRadius(6)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
     }
 }
 

@@ -224,7 +224,7 @@ struct AgentRecordRow: View {
                     if let plan = record.investment_plan {
                         VStack(alignment: .leading, spacing: 2) {
                             Text("INVESTMENT PLAN")
-                                .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                                .font(.system(size: 9, weight: .medium, design: .monospaced))
                                 .foregroundColor(.isdTextMuted)
                                 .tracking(0.3)
                             Text(plan)
@@ -238,8 +238,10 @@ struct AgentRecordRow: View {
             }
         }
         .padding(.vertical, 10)
-        .padding(.horizontal, 4)
+        .padding(.horizontal, 12)
         .background(Color.isdCard)
+        .cornerRadius(6)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
     }
 
     private var signalColor: Color {
@@ -308,14 +310,16 @@ struct RiskRecordRow: View {
             }
         }
         .padding(.vertical, 10)
-        .padding(.horizontal, 4)
+        .padding(.horizontal, 12)
         .background(Color.isdCard)
+        .cornerRadius(6)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
     }
 
     private func riskView(label: String, text: String, color: Color) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(label)
-                .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                .font(.system(size: 9, weight: .medium, design: .monospaced))
                 .foregroundColor(color)
                 .tracking(0.3)
             Text(text)
@@ -325,8 +329,9 @@ struct RiskRecordRow: View {
         }
         .padding(.vertical, 6)
         .padding(.horizontal, 8)
-        .background(color.opacity(0.06))
-        .cornerRadius(4)
+        .background(color.opacity(0.10))
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(color.opacity(0.30), lineWidth: 1))
+        .cornerRadius(6)
     }
 }
 
@@ -383,7 +388,7 @@ struct MemoryRecordRow: View {
                                     .foregroundColor(.isdGold)
                                     .font(.caption)
                                 Text("HOLDINGS CONTEXT")
-                                    .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                                    .font(.system(size: 9, weight: .medium, design: .monospaced))
                                     .foregroundColor(.isdGold)
                                     .tracking(0.3)
                             }
@@ -402,14 +407,16 @@ struct MemoryRecordRow: View {
             }
         }
         .padding(.vertical, 10)
-        .padding(.horizontal, 4)
+        .padding(.horizontal, 12)
         .background(Color.isdCard)
+        .cornerRadius(6)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
     }
 
     private func memoryView(label: String, text: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(label)
-                .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                .font(.system(size: 9, weight: .medium, design: .monospaced))
                 .foregroundColor(.isdTextMuted)
                 .tracking(0.3)
             Text(text)
@@ -420,7 +427,8 @@ struct MemoryRecordRow: View {
         .padding(.vertical, 6)
         .padding(.horizontal, 8)
         .background(Color.isdCard.opacity(0.5))
-        .cornerRadius(4)
+        .cornerRadius(6)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder.opacity(0.5), lineWidth: 1))
     }
 }
 
@@ -479,7 +487,7 @@ struct AnalyzeStockView: View {
                                 .frame(maxWidth: .infinity)
                                 .padding()
                                 .background(Color.isdAccent)
-                                .foregroundStyle(.white)
+                                .foregroundStyle(Color.isdTextPrimary)
                                 .cornerRadius(6)
                             }
                             .disabled(symbol.isEmpty || isAnalyzing)
@@ -565,7 +573,7 @@ struct AgentResultCard: View {
                 if let decision = result.final_decision {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("FINAL DECISION")
-                            .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                            .font(.system(size: 10, weight: .medium, design: .monospaced))
                             .foregroundColor(.isdTextMuted)
                             .tracking(0.3)
                         Text(decision)
@@ -577,7 +585,7 @@ struct AgentResultCard: View {
                 if let debate = result.debate {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("AGENT DEBATE")
-                            .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                            .font(.system(size: 10, weight: .medium, design: .monospaced))
                             .foregroundColor(.isdTextMuted)
                             .tracking(0.3)
 
@@ -607,7 +615,7 @@ struct AgentResultCard: View {
                 if let plan = result.investment_plan {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("INVESTMENT PLAN")
-                            .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                            .font(.system(size: 10, weight: .medium, design: .monospaced))
                             .foregroundColor(.isdTextMuted)
                             .tracking(0.3)
                         Text(plan)
@@ -619,7 +627,7 @@ struct AgentResultCard: View {
                 if let holdingDecision = result.holdings_aware_decision {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("PORTFOLIO MANAGER")
-                            .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                            .font(.system(size: 10, weight: .medium, design: .monospaced))
                             .foregroundColor(.isdTextMuted)
                             .tracking(0.3)
                         Text(holdingDecision)

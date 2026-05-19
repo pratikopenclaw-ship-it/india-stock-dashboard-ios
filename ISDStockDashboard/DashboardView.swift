@@ -52,9 +52,9 @@ struct DashboardView: View {
     private var marketIndicesSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("MARKET INDICES")
-                .font(.system(size: 13, weight: .semibold))
+                .font(.system(size: 11, weight: .medium, design: .monospaced))
                 .foregroundColor(.isdTextMuted)
-                .tracking(0.5)
+                .tracking(0.3)
 
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
                 ForEach(indices) { index in
@@ -67,9 +67,9 @@ struct DashboardView: View {
     private var quickActionsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("QUICK ACTIONS")
-                .font(.system(size: 13, weight: .semibold))
+                .font(.system(size: 11, weight: .medium, design: .monospaced))
                 .foregroundColor(.isdTextMuted)
-                .tracking(0.5)
+                .tracking(0.3)
 
             HStack(spacing: 12) {
                 NavigationLink(destination: SearchView()) {
@@ -127,9 +127,9 @@ struct IndexCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(index.name.uppercased())
-                .font(.system(size: 10, weight: .medium))
+                .font(.system(size: 10, weight: .medium, design: .monospaced))
                 .foregroundColor(.isdTextMuted)
-                .tracking(0.5)
+                .tracking(0.3)
                 .lineLimit(1)
 
             if let value = index.value {
@@ -145,7 +145,7 @@ struct IndexCard: View {
             HStack(spacing: 4) {
                 Image(systemName: (index.change ?? 0) >= 0 ? "arrow.up" : "arrow.down")
                 if let change = index.change, let percent = index.change_percent {
-                    Text(String(format: "%.2f (%.2f%%)", change, percent))
+                    Text(String(format: "%+.2f (%+.2f%%)", change, percent))
                         .font(.system(size: 11, weight: .semibold, design: .monospaced))
                 } else {
                     Text("--")
@@ -157,8 +157,8 @@ struct IndexCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
         .background(Color.isdCard)
-        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
         .cornerRadius(6)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
     }
 }
 
@@ -181,8 +181,8 @@ struct QuickActionCard: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 20)
         .background(Color.isdCard)
-        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
         .cornerRadius(6)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
     }
 }
 

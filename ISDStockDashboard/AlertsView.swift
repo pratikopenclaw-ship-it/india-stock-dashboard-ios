@@ -47,6 +47,7 @@ struct AlertsView: View {
                     } else {
                         ForEach(alerts) { alert in
                             AlertRow(alert: alert)
+                                .listRowSeparator(.hidden)
                         }
                         .onDelete(perform: deleteAlerts)
                     }
@@ -115,13 +116,14 @@ struct AlertRow: View {
                         .foregroundColor(.isdTextPrimary)
 
                     Text(alert.alert_type.uppercased())
-                        .font(.system(size: 9, weight: .bold, design: .monospaced))
+                        .font(.system(size: 9, weight: .medium, design: .monospaced))
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
-                        .foregroundColor(.isdAccentLight)
+                        .foregroundColor(.isdAccent)
                         .background(Color.isdAccent.opacity(0.10))
-                        .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
-                        .cornerRadius(4)
+                        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
+                        .cornerRadius(6)
+                        .tracking(0.3)
 
                     Spacer()
                 }
@@ -146,6 +148,8 @@ struct AlertRow: View {
         }
         .padding(.vertical, 8)
         .background(Color.isdCard)
+        .cornerRadius(6)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
     }
 }
 
@@ -167,13 +171,18 @@ struct CreateAlertView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Stock") {
+                Section {
                     TextField("Symbol (e.g. RELIANCE)", text: $symbol)
                         .textInputAutocapitalization(.characters)
                         .foregroundColor(.isdTextPrimary)
+                } header: {
+                    Text("STOCK")
+                        .font(.system(size: 10, weight: .medium, design: .monospaced))
+                        .foregroundColor(.isdTextMuted)
+                        .tracking(0.3)
                 }
 
-                Section("Alert Type") {
+                Section {
                     Picker("Type", selection: $alertType) {
                         ForEach(alertTypes, id: \.self) { type in
                             Text(type.replacingOccurrences(of: "_", with: " ").capitalized)
@@ -181,9 +190,14 @@ struct CreateAlertView: View {
                         }
                     }
                     .pickerStyle(.menu)
+                } header: {
+                    Text("ALERT TYPE")
+                        .font(.system(size: 10, weight: .medium, design: .monospaced))
+                        .foregroundColor(.isdTextMuted)
+                        .tracking(0.3)
                 }
 
-                Section("Condition") {
+                Section {
                     Picker("Condition", selection: $condition) {
                         ForEach(conditions, id: \.self) { c in
                             Text(c.capitalized)
@@ -191,12 +205,22 @@ struct CreateAlertView: View {
                         }
                     }
                     .pickerStyle(.segmented)
+                } header: {
+                    Text("CONDITION")
+                        .font(.system(size: 10, weight: .medium, design: .monospaced))
+                        .foregroundColor(.isdTextMuted)
+                        .tracking(0.3)
                 }
 
-                Section("Threshold") {
+                Section {
                     TextField("Price / %", text: $threshold)
                         .keyboardType(.decimalPad)
                         .foregroundColor(.isdTextPrimary)
+                } header: {
+                    Text("THRESHOLD")
+                        .font(.system(size: 10, weight: .medium, design: .monospaced))
+                        .foregroundColor(.isdTextMuted)
+                        .tracking(0.3)
                 }
 
                 if let error = errorMessage {

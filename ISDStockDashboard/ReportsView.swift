@@ -77,7 +77,7 @@ struct ReportRow: View {
                 }
                 if let rating = report.rating {
                     Text(rating.uppercased())
-                        .font(.system(size: 9, weight: .bold, design: .monospaced))
+                        .font(.system(size: 9, weight: .medium, design: .monospaced))
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
                         .foregroundColor(ratingColor)
@@ -102,9 +102,15 @@ struct ReportRow: View {
 
             HStack {
                 if let target = report.target_price {
-                    Text("Target: ₹\(String(format: "%.0f", target))")
-                        .font(.system(size: 11, weight: .medium, design: .monospaced))
-                        .foregroundColor(.isdGold)
+                    HStack(spacing: 4) {
+                        Text("TARGET:")
+                            .font(.system(size: 11, weight: .medium, design: .monospaced))
+                            .foregroundColor(.isdTextMuted)
+                            .tracking(0.3)
+                        Text("₹\(String(format: "%.0f", target))")
+                            .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                            .foregroundColor(.isdGold)
+                    }
                 }
                 Spacer()
                 if let date = report.date {
@@ -123,6 +129,8 @@ struct ReportRow: View {
         }
         .padding(.vertical, 8)
         .background(Color.isdCard)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
+        .cornerRadius(6)
     }
 
     private var ratingColor: Color {

@@ -39,10 +39,15 @@ struct CalendarView: View {
                         }
                     } else {
                         ForEach(groupedEvents.keys.sorted(), id: \.self) { date in
-                            Section(date) {
+                            Section {
                                 ForEach(groupedEvents[date] ?? []) { event in
                                     EventRow(event: event)
                                 }
+                            } header: {
+                                Text(date)
+                                    .font(.system(size: 11, weight: .medium, design: .monospaced))
+                                    .foregroundColor(.isdTextMuted)
+                                    .tracking(0.3)
                             }
                             .listRowBackground(Color.isdCard)
                         }
@@ -86,10 +91,10 @@ struct EventRow: View {
                         .font(.system(size: 15, weight: .bold, design: .monospaced))
                         .foregroundColor(.isdTextPrimary)
                     Text(event.event_type.uppercased())
-                        .font(.system(size: 9, weight: .bold, design: .monospaced))
+                        .font(.system(size: 9, weight: .medium, design: .monospaced))
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
-                        .foregroundColor(.isdAccentLight)
+                        .foregroundColor(.isdAccent)
                         .background(Color.isdAccent.opacity(0.10))
                         .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
                         .cornerRadius(4)
@@ -101,9 +106,15 @@ struct EventRow: View {
                         .lineLimit(1)
                 }
                 if let eps = event.eps_estimate {
-                    Text("EPS est: \(String(format: "%.2f", eps))")
-                        .font(.system(size: 11, design: .monospaced))
-                        .foregroundColor(.isdTextMuted)
+                    HStack(spacing: 4) {
+                        Text("EPS EST:")
+                            .font(.system(size: 11, weight: .medium, design: .monospaced))
+                            .foregroundColor(.isdTextMuted)
+                            .tracking(0.3)
+                        Text(String(format: "%.2f", eps))
+                            .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                            .foregroundColor(.isdTextSecondary)
+                    }
                 }
             }
             Spacer()
@@ -115,6 +126,8 @@ struct EventRow: View {
         }
         .padding(.vertical, 6)
         .background(Color.isdCard)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
+        .cornerRadius(6)
     }
 }
 

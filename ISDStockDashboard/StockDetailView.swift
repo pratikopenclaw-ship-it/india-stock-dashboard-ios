@@ -96,7 +96,7 @@ struct StockDetailView: View {
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
                     .background(Color.isdAccent.opacity(0.10))
-                    .foregroundColor(.isdAccentLight)
+                    .foregroundColor(.isdAccent)
                     .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
                     .cornerRadius(6)
 
@@ -158,6 +158,7 @@ struct StockDetailView: View {
                     Text("LIVE")
                         .font(.system(size: 9, weight: .medium, design: .monospaced))
                         .foregroundColor(.isdGreen)
+                        .tracking(0.3)
                 }
             }
         }
@@ -237,9 +238,13 @@ struct StockDetailView: View {
                     Text("No recent news for this stock")
                 }
             } else {
-                ForEach(news.prefix(10)) { item in
-                    StockNewsRow(item: item)
+                VStack(spacing: 0) {
+                    ForEach(news.prefix(10)) { item in
+                        StockNewsRow(item: item)
+                    }
                 }
+                .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
+                .cornerRadius(6)
             }
         }
     }
@@ -247,9 +252,9 @@ struct StockDetailView: View {
     private func sentimentSection(_ sentiment: StockSentiment) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("SENTIMENT")
-                .font(.system(size: 13, weight: .semibold))
+                .font(.system(size: 11, weight: .medium, design: .monospaced))
                 .foregroundColor(.isdTextMuted)
-                .tracking(0.5)
+                .tracking(0.3)
 
             HStack(spacing: 16) {
                 if let bullish = sentiment.bullish_pct {
@@ -268,6 +273,7 @@ struct StockDetailView: View {
                     Text("OVERALL")
                         .font(.system(size: 10, weight: .medium, design: .monospaced))
                         .foregroundColor(.isdTextMuted)
+                        .tracking(0.3)
                     Spacer()
                     Text(overall.uppercased())
                         .font(.system(size: 13, weight: .bold, design: .monospaced))
@@ -309,15 +315,16 @@ struct StockDetailView: View {
     private func supportResistanceSection(_ sr: SupportResistance) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("SUPPORT & RESISTANCE")
-                .font(.system(size: 13, weight: .semibold))
+                .font(.system(size: 11, weight: .medium, design: .monospaced))
                 .foregroundColor(.isdTextMuted)
-                .tracking(0.5)
+                .tracking(0.3)
 
             if !sr.resistance_levels.isEmpty {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("RESISTANCE")
                         .font(.system(size: 10, weight: .medium, design: .monospaced))
                         .foregroundColor(.isdRed)
+                        .tracking(0.3)
                     ForEach(sr.resistance_levels) { level in
                         levelRow(level, color: .isdRed)
                     }
@@ -329,6 +336,7 @@ struct StockDetailView: View {
                     Text("SUPPORT")
                         .font(.system(size: 10, weight: .medium, design: .monospaced))
                         .foregroundColor(.isdGreen)
+                        .tracking(0.3)
                     ForEach(sr.support_levels) { level in
                         levelRow(level, color: .isdGreen)
                     }
@@ -367,6 +375,7 @@ struct StockDetailView: View {
                     Text("RECOMMENDATION")
                         .font(.system(size: 10, weight: .medium, design: .monospaced))
                         .foregroundColor(.isdTextMuted)
+                        .tracking(0.3)
                     Spacer()
                     Text(rec.uppercased())
                         .font(.system(size: 14, weight: .bold, design: .monospaced))
@@ -379,6 +388,7 @@ struct StockDetailView: View {
                     Text("CONFIDENCE")
                         .font(.system(size: 10, weight: .medium, design: .monospaced))
                         .foregroundColor(.isdTextMuted)
+                        .tracking(0.3)
                     Spacer()
                     Text(String(format: "%.0f%%", conf * 100))
                         .font(.system(size: 14, weight: .bold, design: .monospaced))
@@ -414,7 +424,7 @@ struct StockDetailView: View {
     private func analysisBlock(title: String, items: [String]) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
-                .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                .font(.system(size: 10, weight: .medium, design: .monospaced))
                 .foregroundColor(.isdTextMuted)
                 .tracking(0.3)
             ForEach(items, id: \.self) { item in
@@ -447,7 +457,7 @@ struct StockDetailView: View {
                 .frame(maxWidth: .infinity)
                 .padding()
                 .background(Color.isdAccent)
-                .foregroundStyle(.white)
+                .foregroundColor(.isdTextPrimary)
                 .cornerRadius(6)
             }
         }
@@ -529,7 +539,7 @@ struct StatCard: View {
             Text(title)
                 .font(.system(size: 10, weight: .medium, design: .monospaced))
                 .foregroundColor(.isdTextMuted)
-                .tracking(0.5)
+                .tracking(0.3)
 
             Text(value)
                 .font(.system(size: 17, weight: .semibold, design: .monospaced))
@@ -555,15 +565,16 @@ struct StockNewsRow: View {
                     .font(.system(size: 9, weight: .medium, design: .monospaced))
                     .padding(.horizontal, 6)
                     .padding(.vertical, 2)
-                    .foregroundColor(.isdAccentLight)
+                    .foregroundColor(.isdAccent)
                     .background(Color.isdAccent.opacity(0.10))
-                    .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
-                    .cornerRadius(4)
+                    .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
+                    .cornerRadius(6)
 
                 if let sentiment = item.sentiment {
                     Text(sentiment.uppercased())
                         .font(.system(size: 9, weight: .medium, design: .monospaced))
                         .foregroundColor(sentimentColor(sentiment))
+                        .tracking(0.3)
                 }
 
                 Spacer()

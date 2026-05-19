@@ -85,8 +85,8 @@ struct OptionsChainView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 8)
-        .background(color.opacity(0.08))
-        .overlay(RoundedRectangle(cornerRadius: 4).stroke(color.opacity(0.25), lineWidth: 1))
+        .background(color.opacity(0.10))
+        .overlay(RoundedRectangle(cornerRadius: 4).stroke(color.opacity(0.30), lineWidth: 1))
         .cornerRadius(4)
     }
 
@@ -126,7 +126,7 @@ struct OptionsChainView: View {
             headerCell("PE IV", width: 50)
             headerCell("PE OI", width: 70)
         }
-        .font(.system(size: 9, weight: .bold, design: .monospaced))
+        .font(.system(size: 9, weight: .medium, design: .monospaced))
         .foregroundColor(.isdTextMuted)
         .padding(.vertical, 6)
         .background(Color.isdCard)
@@ -159,7 +159,7 @@ struct OptionsChainView: View {
 
     private func dataCell(_ text: String, width: CGFloat, color: Color) -> some View {
         Text(text)
-            .font(.system(size: 11, design: .monospaced))
+            .font(.system(size: 11, weight: .semibold, design: .monospaced))
             .foregroundColor(color)
             .frame(width: width, alignment: .center)
     }

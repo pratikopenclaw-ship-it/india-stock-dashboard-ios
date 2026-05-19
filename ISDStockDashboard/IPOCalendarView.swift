@@ -86,13 +86,15 @@ struct IPOCalendarView: View {
                     StatBadge(title: "UPCOMING", value: "\(stats.upcoming_count)", color: .isdAccent)
                     StatBadge(title: "LISTED", value: "\(stats.listed_count)", color: .isdGold)
                     if let avg = stats.avg_listing_gain {
-                        StatBadge(title: "AVG GAIN", value: String(format: "%.1f%%", avg), color: avg >= 0 ? .isdGreen : .isdRed)
+                        StatBadge(title: "AVG GAIN", value: String(format: "%+.1f%%", avg), color: avg >= 0 ? .isdGreen : .isdRed)
                     }
                 }
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)
             }
             .background(Color.isdCard)
+            .cornerRadius(6)
+            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
         }
     }
 
@@ -107,8 +109,14 @@ struct IPOCalendarView: View {
             } else {
                 ForEach(ipos) { ipo in
                     IPORow(ipo: ipo)
+                        .listRowSeparator(.hidden)
                 }
             }
+        } header: {
+            Text(title)
+                .font(.system(size: 10, weight: .medium, design: .monospaced))
+                .foregroundColor(.isdTextMuted)
+                .tracking(0.3)
         }
     }
 
@@ -146,13 +154,14 @@ struct IPORow: View {
                         .foregroundColor(.isdTextPrimary)
 
                     Text(ipo.status.uppercased())
-                        .font(.system(size: 9, weight: .bold, design: .monospaced))
+                        .font(.system(size: 9, weight: .medium, design: .monospaced))
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
                         .foregroundColor(statusColor)
                         .background(statusColor.opacity(0.10))
-                        .overlay(RoundedRectangle(cornerRadius: 4).stroke(statusColor.opacity(0.30), lineWidth: 1))
-                        .cornerRadius(4)
+                        .overlay(RoundedRectangle(cornerRadius: 6).stroke(statusColor.opacity(0.30), lineWidth: 1))
+                        .cornerRadius(6)
+                        .tracking(0.3)
 
                     Spacer()
                 }
@@ -167,11 +176,13 @@ struct IPORow: View {
                         Text("\(formatDate(open)) - \(formatDate(close))")
                             .font(.system(size: 9, weight: .medium, design: .monospaced))
                             .foregroundColor(.isdTextMuted)
+                            .tracking(0.3)
                     }
                     if let pe = ipo.pe_ratio {
                         Text(String(format: "P/E %.1f", pe))
                             .font(.system(size: 9, weight: .medium, design: .monospaced))
                             .foregroundColor(.isdTextMuted)
+                            .tracking(0.3)
                     }
                 }
             }
@@ -201,11 +212,14 @@ struct IPORow: View {
                     Text(String(format: "Sub %.1fx", sub))
                         .font(.system(size: 10, weight: .medium, design: .monospaced))
                         .foregroundColor(sub >= 10 ? .isdGreen : .isdTextMuted)
+                        .tracking(0.3)
                 }
             }
         }
         .padding(.vertical, 8)
         .background(Color.isdCard)
+        .cornerRadius(6)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
     }
 
     private var statusColor: Color {

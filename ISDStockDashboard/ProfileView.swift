@@ -87,22 +87,25 @@ struct ProfileView: View {
                 }
 
                 Text(user.role.uppercased())
-                    .font(.system(size: 10, weight: .bold, design: .monospaced))
+                    .font(.system(size: 10, weight: .medium, design: .monospaced))
                     .padding(.horizontal, 10)
                     .padding(.vertical, 3)
-                    .foregroundColor(.isdAccentLight)
+                    .foregroundColor(.isdAccent)
                     .background(Color.isdAccent.opacity(0.10))
-                    .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
-                    .cornerRadius(4)
+                    .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
+                    .cornerRadius(6)
+                    .tracking(0.3)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
             .background(Color.isdCard)
+            .cornerRadius(6)
+            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
         }
     }
 
     private var accountActionsSection: some View {
-        Section("Account") {
+        Section {
             Button {
                 showSignOutConfirmation = true
             } label: {
@@ -114,11 +117,16 @@ struct ProfileView: View {
                     Spacer()
                 }
             }
+        } header: {
+            Text("ACCOUNT")
+                .font(.system(size: 10, weight: .medium, design: .monospaced))
+                .foregroundColor(.isdTextMuted)
+                .tracking(0.3)
         }
     }
 
     private var appInfoSection: some View {
-        Section("App Info") {
+        Section {
             let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
             let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
 
@@ -127,6 +135,11 @@ struct ProfileView: View {
 
             LabeledContent("Platform", value: "iOS \(UIDevice.current.systemVersion)")
                 .foregroundColor(.isdTextPrimary)
+        } header: {
+            Text("APP INFO")
+                .font(.system(size: 10, weight: .medium, design: .monospaced))
+                .foregroundColor(.isdTextMuted)
+                .tracking(0.3)
         }
     }
 

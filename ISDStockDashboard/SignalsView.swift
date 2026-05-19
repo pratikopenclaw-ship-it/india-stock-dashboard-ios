@@ -146,7 +146,7 @@ struct SignalRow: View {
 
                         Text(String(format: "%.2f", rr))
                             .font(.system(size: 12, weight: .semibold, design: .monospaced))
-                            .foregroundColor(.isdAccentLight)
+                            .foregroundColor(.isdAccent)
                     }
                 }
             }
@@ -167,7 +167,10 @@ struct SignalRow: View {
             }
         }
         .padding(.vertical, 8)
+        .padding(.horizontal, 12)
         .background(Color.isdCard)
+        .cornerRadius(6)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
     }
 
     private var signalColor: Color {
@@ -190,8 +193,8 @@ struct SignalBadge: View {
             .padding(.vertical, 2)
             .foregroundColor(color)
             .background(color.opacity(0.10))
-            .overlay(RoundedRectangle(cornerRadius: 4).stroke(color.opacity(0.30), lineWidth: 1))
-            .cornerRadius(4)
+            .overlay(RoundedRectangle(cornerRadius: 6).stroke(color.opacity(0.30), lineWidth: 1))
+            .cornerRadius(6)
     }
 
     private var badgeProps: (Color, String) {
@@ -223,9 +226,9 @@ struct SignalCountBadge: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 6)
-        .background(color.opacity(0.08))
-        .overlay(RoundedRectangle(cornerRadius: 4).stroke(color.opacity(0.25), lineWidth: 1))
-        .cornerRadius(4)
+        .background(color.opacity(0.10))
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(color.opacity(0.30), lineWidth: 1))
+        .cornerRadius(6)
     }
 }
 
@@ -286,24 +289,35 @@ struct SignalDetailView: View {
                     .lineLimit(nil)
             }
             .padding(.vertical, 8)
+            .padding(.horizontal, 12)
             .background(Color.isdCard)
+            .cornerRadius(6)
+            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
         }
     }
 
     private func tradeTargetsSection(entry: Double, exit: Double, stop: Double) -> some View {
-        Section("TRADE TARGETS") {
+        Section {
             HStack(spacing: 16) {
                 TargetColumn(label: "ENTRY", value: entry, color: .isdAccent)
                 TargetColumn(label: "TARGET", value: exit, color: .isdGreen)
                 TargetColumn(label: "STOP", value: stop, color: .isdRed)
             }
             .padding(.vertical, 8)
+            .padding(.horizontal, 12)
             .background(Color.isdCard)
+            .cornerRadius(6)
+            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
+        } header: {
+            Text("TRADE TARGETS")
+                .font(.system(size: 10, weight: .medium, design: .monospaced))
+                .foregroundColor(.isdTextMuted)
+                .tracking(0.3)
         }
     }
 
     private var indicatorsSection: some View {
-        Section("INDICATORS") {
+        Section {
             ForEach(signal.indicators, id: \.name) { indicator in
                 HStack {
                     Text(indicator.name)
@@ -317,8 +331,16 @@ struct SignalDetailView: View {
                         .foregroundColor(indicatorColor(indicator.score))
                 }
                 .padding(.vertical, 4)
+                .padding(.horizontal, 12)
                 .background(Color.isdCard)
+                .cornerRadius(6)
+                .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
             }
+        } header: {
+            Text("INDICATORS")
+                .font(.system(size: 10, weight: .medium, design: .monospaced))
+                .foregroundColor(.isdTextMuted)
+                .tracking(0.3)
         }
     }
 

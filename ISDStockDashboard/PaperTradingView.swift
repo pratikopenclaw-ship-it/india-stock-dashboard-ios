@@ -91,6 +91,7 @@ struct PaperTradingView: View {
                 Text("P&L %")
                     .font(.system(size: 10, weight: .medium, design: .monospaced))
                     .foregroundColor(.isdTextMuted)
+                    .tracking(0.3)
                 Spacer()
                 Text(String(format: "%.2f%%", pf.pnl_percent))
                     .font(.system(size: 15, weight: .bold, design: .monospaced))
@@ -99,9 +100,9 @@ struct PaperTradingView: View {
 
             if !pf.positions.isEmpty {
                 Text("POSITIONS")
-                    .font(.system(size: 13, weight: .semibold))
+                    .font(.system(size: 11, weight: .medium, design: .monospaced))
                     .foregroundColor(.isdTextMuted)
-                    .tracking(0.5)
+                    .tracking(0.3)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 VStack(spacing: 0) {
@@ -155,17 +156,17 @@ struct PaperTradingView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 10)
-        .background(color.opacity(0.08))
-        .overlay(RoundedRectangle(cornerRadius: 4).stroke(color.opacity(0.25), lineWidth: 1))
-        .cornerRadius(4)
+        .background(color.opacity(0.10))
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(color.opacity(0.30), lineWidth: 1))
+        .cornerRadius(6)
     }
 
     private var tradesSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("RECENT TRADES")
-                .font(.system(size: 13, weight: .semibold))
+                .font(.system(size: 11, weight: .medium, design: .monospaced))
                 .foregroundColor(.isdTextMuted)
-                .tracking(0.5)
+                .tracking(0.3)
 
             VStack(spacing: 0) {
                 ForEach(trades.prefix(10)) { trade in
@@ -181,8 +182,8 @@ struct PaperTradingView: View {
                                     .padding(.vertical, 2)
                                     .foregroundColor(trade.action == "BUY" ? .isdGreen : .isdRed)
                                     .background((trade.action == "BUY" ? Color.isdGreen : Color.isdRed).opacity(0.10))
-                                    .overlay(RoundedRectangle(cornerRadius: 4).stroke((trade.action == "BUY" ? Color.isdGreen : Color.isdRed).opacity(0.30), lineWidth: 1))
-                                    .cornerRadius(4)
+                                    .overlay(RoundedRectangle(cornerRadius: 6).stroke((trade.action == "BUY" ? Color.isdGreen : Color.isdRed).opacity(0.30), lineWidth: 1))
+                                    .cornerRadius(6)
                             }
                             Text("\(String(format: "%.0f", trade.quantity)) @ ₹\(String(format: "%.2f", trade.price))")
                                 .font(.system(size: 11, design: .monospaced))

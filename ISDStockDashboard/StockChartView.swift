@@ -69,10 +69,10 @@ struct StockChartView: View {
                             .font(.system(size: 12, weight: .semibold, design: .monospaced))
                             .padding(.horizontal, 12)
                             .padding(.vertical, 6)
-                            .foregroundColor(selectedTimeframe == tf ? .white : .isdAccent)
+                            .foregroundColor(selectedTimeframe == tf ? .isdTextPrimary : .isdAccent)
                             .background(selectedTimeframe == tf ? Color.isdAccent : Color.isdAccent.opacity(0.10))
-                            .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color.isdAccent.opacity(selectedTimeframe == tf ? 0 : 0.30), lineWidth: 1))
-                            .cornerRadius(4)
+                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdAccent.opacity(selectedTimeframe == tf ? 0 : 0.30), lineWidth: 1))
+                            .cornerRadius(6)
                     }
                 }
             }

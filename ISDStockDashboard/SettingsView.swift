@@ -24,7 +24,7 @@ struct SettingsView: View {
                     if isLoading {
                     Section {
                         ProgressView("Loading settings...")
-                            .tint(Color(hex: "#94A3B8"))
+                            .tint(.isdTextMuted)
                             .padding()
                     }
                 } else if let error = errorMessage {
@@ -54,7 +54,7 @@ struct SettingsView: View {
                             HStack {
                                 if isSaving {
                                     ProgressView()
-                                        .tint(.white)
+                                        .tint(.isdTextPrimary)
                                 }
                                 Text("Save Settings")
                                     .fontWeight(.semibold)
@@ -64,7 +64,7 @@ struct SettingsView: View {
                         }
                         .disabled(isSaving)
                         .listRowBackground(Color.isdAccent)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.isdTextPrimary)
                     }
 
                     if let message = saveMessage {
@@ -94,7 +94,7 @@ struct SettingsView: View {
                 }
 
                 if let user = authManager.currentUser {
-                    Section("Account") {
+                    Section {
                         LabeledContent("Username", value: user.username)
                             .foregroundColor(.isdTextPrimary)
                         LabeledContent("Email", value: user.email)
@@ -105,6 +105,11 @@ struct SettingsView: View {
                         }
                         LabeledContent("Role", value: user.role.capitalized)
                             .foregroundColor(.isdTextPrimary)
+                    } header: {
+                        Text("ACCOUNT")
+                            .font(.system(size: 10, weight: .medium, design: .monospaced))
+                            .foregroundColor(.isdTextMuted)
+                            .tracking(0.3)
                     }
                 }
                 }
@@ -136,7 +141,15 @@ struct SettingsView: View {
                           displayedComponents: .hourAndMinute)
             }
         } header: {
-            Label("Email Notifications", systemImage: "envelope.fill")
+            HStack(spacing: 6) {
+                Image(systemName: "envelope.fill")
+                    .font(.system(size: 10))
+                    .foregroundColor(.isdTextMuted)
+                Text("EMAIL NOTIFICATIONS")
+                    .font(.system(size: 10, weight: .medium, design: .monospaced))
+                    .foregroundColor(.isdTextMuted)
+                    .tracking(0.3)
+            }
         }
     }
 
@@ -149,7 +162,15 @@ struct SettingsView: View {
                 Toggle("Price Changes", isOn: settings.push_for_price_changes)
             }
         } header: {
-            Label("Push Notifications", systemImage: "bell.fill")
+            HStack(spacing: 6) {
+                Image(systemName: "bell.fill")
+                    .font(.system(size: 10))
+                    .foregroundColor(.isdTextMuted)
+                Text("PUSH NOTIFICATIONS")
+                    .font(.system(size: 10, weight: .medium, design: .monospaced))
+                    .foregroundColor(.isdTextMuted)
+                    .tracking(0.3)
+            }
         }
     }
 
@@ -176,7 +197,15 @@ struct SettingsView: View {
                 }
             }
         } header: {
-            Label("Telegram", systemImage: "paperplane.fill")
+            HStack(spacing: 6) {
+                Image(systemName: "paperplane.fill")
+                    .font(.system(size: 10))
+                    .foregroundColor(.isdTextMuted)
+                Text("TELEGRAM")
+                    .font(.system(size: 10, weight: .medium, design: .monospaced))
+                    .foregroundColor(.isdTextMuted)
+                    .tracking(0.3)
+            }
         } footer: {
             Text("Enter your Telegram Chat ID to receive alerts via Telegram bot @Isdaler_bot")
         }
@@ -196,7 +225,15 @@ struct SettingsView: View {
                           displayedComponents: .hourAndMinute)
             }
         } header: {
-            Label("Quiet Hours", systemImage: "moon.fill")
+            HStack(spacing: 6) {
+                Image(systemName: "moon.fill")
+                    .font(.system(size: 10))
+                    .foregroundColor(.isdTextMuted)
+                Text("QUIET HOURS")
+                    .font(.system(size: 10, weight: .medium, design: .monospaced))
+                    .foregroundColor(.isdTextMuted)
+                    .tracking(0.3)
+            }
         }
     }
 

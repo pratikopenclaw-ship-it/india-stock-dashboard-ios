@@ -76,8 +76,8 @@ struct TradePlannerView: View {
                     Spacer()
                 }
                 .padding()
-                .background(recColor(rec).opacity(0.08))
-                .overlay(RoundedRectangle(cornerRadius: 6).stroke(recColor(rec).opacity(0.25), lineWidth: 1))
+                .background(recColor(rec).opacity(0.10))
+                .overlay(RoundedRectangle(cornerRadius: 6).stroke(recColor(rec).opacity(0.30), lineWidth: 1))
                 .cornerRadius(6)
             }
 
@@ -96,6 +96,7 @@ struct TradePlannerView: View {
                     Text("RISK : REWARD")
                         .font(.system(size: 11, weight: .medium, design: .monospaced))
                         .foregroundColor(.isdTextMuted)
+                        .tracking(0.3)
                     Spacer()
                     Text(String(format: "1 : %.2f", rr))
                         .font(.system(size: 20, weight: .bold, design: .monospaced))
@@ -112,6 +113,7 @@ struct TradePlannerView: View {
                     Text("MAX POSITION")
                         .font(.system(size: 11, weight: .medium, design: .monospaced))
                         .foregroundColor(.isdTextMuted)
+                        .tracking(0.3)
                     Spacer()
                     Text(String(format: "₹%.0f", max))
                         .font(.system(size: 15, weight: .bold, design: .monospaced))
@@ -137,9 +139,9 @@ struct TradePlannerView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12)
-        .background(color.opacity(0.08))
-        .overlay(RoundedRectangle(cornerRadius: 4).stroke(color.opacity(0.25), lineWidth: 1))
-        .cornerRadius(4)
+        .background(color.opacity(0.10))
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(color.opacity(0.30), lineWidth: 1))
+        .cornerRadius(6)
     }
 
     private func recColor(_ rec: String) -> Color {

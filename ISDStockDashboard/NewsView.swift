@@ -49,6 +49,7 @@ struct NewsView: View {
                     } else {
                         ForEach(newsItems) { item in
                             NewsRow(item: item)
+                                .listRowSeparator(.hidden)
                         }
                     }
                 }
@@ -135,6 +136,8 @@ struct NewsRow: View {
         }
         .padding(.vertical, 8)
         .background(Color.isdCard)
+        .cornerRadius(6)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
     }
 
     private func formattedDate(_ dateString: String) -> String {
@@ -158,14 +161,15 @@ struct SentimentBadge: View {
             Image(systemName: icon)
                 .font(.system(size: 8))
             Text(label)
-                .font(.system(size: 10, weight: .bold, design: .monospaced))
+                .font(.system(size: 10, weight: .medium, design: .monospaced))
+                .tracking(0.3)
         }
         .padding(.horizontal, 6)
         .padding(.vertical, 2)
         .foregroundColor(color)
         .background(color.opacity(0.10))
-        .overlay(RoundedRectangle(cornerRadius: 4).stroke(color.opacity(0.30), lineWidth: 1))
-        .cornerRadius(4)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(color.opacity(0.30), lineWidth: 1))
+        .cornerRadius(6)
     }
 
     private var sentimentProps: (Color, String, String) {

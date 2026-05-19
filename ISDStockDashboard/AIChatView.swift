@@ -52,8 +52,8 @@ struct AIChatView: View {
                 .padding(10)
                 .background(Color.isdCard)
                 .foregroundColor(.isdTextPrimary)
-                .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
                 .cornerRadius(6)
+                .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
                 .focused($isInputFocused)
 
             Button {
@@ -111,7 +111,7 @@ struct MessageBubble: View {
             VStack(alignment: message.role == "user" ? .trailing : .leading, spacing: 4) {
                 Text(message.content)
                     .font(.subheadline)
-                    .foregroundColor(message.role == "user" ? .white : .isdTextPrimary)
+                    .foregroundColor(.isdTextPrimary)
                     .padding(12)
                     .background(message.role == "user" ? Color.isdAccent : Color.isdCard)
                     .overlay(RoundedRectangle(cornerRadius: 12).stroke(message.role == "user" ? Color.clear : Color.isdBorder, lineWidth: 1))

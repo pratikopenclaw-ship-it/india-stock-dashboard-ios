@@ -144,6 +144,8 @@ struct SmartMoneyView: View {
                     .padding(.vertical, 12)
                     .padding(.horizontal, 8)
                     .background(Color.isdCard)
+                    .cornerRadius(6)
+                    .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
                 }
             } else {
                 Section {
@@ -241,8 +243,8 @@ struct SmartMoneyCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 12)
         .padding(.horizontal, 12)
-        .background(color.opacity(0.08))
-        .overlay(RoundedRectangle(cornerRadius: 6).stroke(color.opacity(0.25), lineWidth: 1))
+        .background(color.opacity(0.10))
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(color.opacity(0.30), lineWidth: 1))
         .cornerRadius(6)
     }
 }
@@ -266,8 +268,9 @@ struct DetailBadge: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 8)
         .padding(.vertical, 6)
-        .background(color.opacity(0.06))
-        .cornerRadius(4)
+        .background(color.opacity(0.10))
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(color.opacity(0.30), lineWidth: 1))
+        .cornerRadius(6)
     }
 }
 
@@ -286,9 +289,9 @@ struct TrendBadge: View {
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 6)
-        .background(trendColor.opacity(0.08))
-        .overlay(RoundedRectangle(cornerRadius: 4).stroke(trendColor.opacity(0.25), lineWidth: 1))
-        .cornerRadius(4)
+        .background(trendColor.opacity(0.10))
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(trendColor.opacity(0.30), lineWidth: 1))
+        .cornerRadius(6)
     }
 
     private var trendColor: Color {
@@ -317,8 +320,8 @@ struct BulkDealRow: View {
                             .padding(.vertical, 2)
                             .foregroundColor(.isdAccent)
                             .background(Color.isdAccent.opacity(0.10))
-                            .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
-                            .cornerRadius(4)
+                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
+                            .cornerRadius(6)
                     }
 
                     Spacer()
@@ -361,7 +364,10 @@ struct BulkDealRow: View {
             }
         }
         .padding(.vertical, 8)
+        .padding(.horizontal, 12)
         .background(Color.isdCard)
+        .cornerRadius(6)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
     }
 }
 

@@ -107,10 +107,10 @@ struct ScreenerView: View {
                             .font(.system(size: 11, weight: .semibold, design: .monospaced))
                             .padding(.horizontal, 10)
                             .padding(.vertical, 5)
-                            .foregroundColor(selectedFilter == nil ? .white : .isdAccent)
+                            .foregroundColor(selectedFilter == nil ? .isdTextPrimary : .isdAccent)
                             .background(selectedFilter == nil ? Color.isdAccent : Color.isdAccent.opacity(0.10))
-                            .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color.isdAccent.opacity(selectedFilter == nil ? 0 : 0.30), lineWidth: 1))
-                            .cornerRadius(4)
+                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdAccent.opacity(selectedFilter == nil ? 0 : 0.30), lineWidth: 1))
+                            .cornerRadius(6)
                     }
 
                     ForEach(filters, id: \.self) { filter in
@@ -122,10 +122,10 @@ struct ScreenerView: View {
                                 .font(.system(size: 11, weight: .semibold, design: .monospaced))
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 5)
-                                .foregroundColor(selectedFilter == filter ? .white : recommendationColor(filter))
+                                .foregroundColor(selectedFilter == filter ? .isdTextPrimary : recommendationColor(filter))
                                 .background(selectedFilter == filter ? recommendationColor(filter) : recommendationColor(filter).opacity(0.10))
-                                .overlay(RoundedRectangle(cornerRadius: 4).stroke(recommendationColor(filter).opacity(selectedFilter == filter ? 0 : 0.30), lineWidth: 1))
-                                .cornerRadius(4)
+                                .overlay(RoundedRectangle(cornerRadius: 6).stroke(recommendationColor(filter).opacity(selectedFilter == filter ? 0 : 0.30), lineWidth: 1))
+                                .cornerRadius(6)
                         }
                     }
                 }
@@ -133,6 +133,8 @@ struct ScreenerView: View {
                 .padding(.vertical, 4)
             }
             .background(Color.isdCard)
+            .cornerRadius(6)
+            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
         }
     }
 
@@ -153,6 +155,8 @@ struct ScreenerView: View {
                 .padding(.vertical, 8)
             }
             .background(Color.isdCard)
+            .cornerRadius(6)
+            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
         }
     }
 
@@ -167,6 +171,7 @@ struct ScreenerView: View {
             Text("SORT")
                 .font(.system(size: 9, weight: .medium, design: .monospaced))
                 .foregroundColor(.isdTextMuted)
+                .tracking(0.3)
             Picker("Sort", selection: $sortBy) {
                 ForEach(sortOptions, id: \.self) { option in
                     Text(formatSortLabel(option)).tag(option)
@@ -182,6 +187,8 @@ struct ScreenerView: View {
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
         .background(Color.isdCard)
+        .cornerRadius(6)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
     }
 
     private var loadMoreButton: some View {
@@ -271,8 +278,8 @@ struct ScreenerRow: View {
                             .padding(.vertical, 2)
                             .foregroundColor(recColor(rec))
                             .background(recColor(rec).opacity(0.10))
-                            .overlay(RoundedRectangle(cornerRadius: 4).stroke(recColor(rec).opacity(0.30), lineWidth: 1))
-                            .cornerRadius(4)
+                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(recColor(rec).opacity(0.30), lineWidth: 1))
+                            .cornerRadius(6)
                     }
 
                     Spacer()
@@ -321,7 +328,10 @@ struct ScreenerRow: View {
             }
         }
         .padding(.vertical, 8)
+        .padding(.horizontal, 12)
         .background(Color.isdCard)
+        .cornerRadius(6)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
     }
 
     private func recColor(_ rec: String) -> Color {
@@ -350,9 +360,9 @@ struct StatBadge: View {
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 6)
-        .background(color.opacity(0.08))
-        .overlay(RoundedRectangle(cornerRadius: 4).stroke(color.opacity(0.25), lineWidth: 1))
-        .cornerRadius(4)
+        .background(color.opacity(0.10))
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(color.opacity(0.30), lineWidth: 1))
+        .cornerRadius(6)
     }
 }
 
@@ -377,9 +387,10 @@ struct FilterPanel: View {
                                     .font(.system(size: 11, weight: .semibold))
                                     .padding(.horizontal, 10)
                                     .padding(.vertical, 5)
-                                    .foregroundColor(selectedSector == nil ? .white : .isdAccent)
+                                    .foregroundColor(selectedSector == nil ? .isdTextPrimary : .isdAccent)
                                     .background(selectedSector == nil ? Color.isdAccent : Color.isdAccent.opacity(0.10))
-                                    .cornerRadius(4)
+                                    .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdAccent.opacity(selectedSector == nil ? 0 : 0.30), lineWidth: 1))
+                                    .cornerRadius(6)
                             }
                             ForEach(sectors, id: \.self) { sector in
                                 Button {
@@ -389,9 +400,10 @@ struct FilterPanel: View {
                                         .font(.system(size: 11, weight: .semibold))
                                         .padding(.horizontal, 10)
                                         .padding(.vertical, 5)
-                                        .foregroundColor(selectedSector == sector ? .white : .isdAccent)
+                                        .foregroundColor(selectedSector == sector ? .isdTextPrimary : .isdAccent)
                                         .background(selectedSector == sector ? Color.isdAccent : Color.isdAccent.opacity(0.10))
-                                        .cornerRadius(4)
+                                        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdAccent.opacity(selectedSector == sector ? 0 : 0.30), lineWidth: 1))
+                                        .cornerRadius(6)
                                 }
                             }
                         }

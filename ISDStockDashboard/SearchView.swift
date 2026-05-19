@@ -97,7 +97,7 @@ struct StockSearchRow: View {
                         .padding(.horizontal, 8)
                         .padding(.vertical, 2)
                         .background(Color.isdAccent.opacity(0.10))
-                        .foregroundColor(.isdAccentLight)
+                        .foregroundColor(.isdAccent)
                         .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
                         .cornerRadius(4)
 
@@ -123,7 +123,7 @@ struct StockSearchRow: View {
                     HStack(spacing: 2) {
                         Image(systemName: changePercent >= 0 ? "arrow.up" : "arrow.down")
                             .font(.caption2)
-                        Text(String(format: "%.2f%%", changePercent))
+                        Text(String(format: "%+.2f%%", changePercent))
                             .font(.system(size: 12, weight: .medium, design: .monospaced))
                     }
                     .foregroundStyle(Color.profitLossColor(changePercent))

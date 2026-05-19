@@ -42,9 +42,9 @@ struct AdditionalMarketInfoView: View {
     private func marketBreadthSection(_ b: MarketBreadth) -> some View {
         VStack(spacing: 16) {
             Text("MARKET BREADTH")
-                .font(.system(size: 13, weight: .semibold))
+                .font(.system(size: 12, weight: .medium, design: .monospaced))
                 .foregroundColor(.isdTextMuted)
-                .tracking(0.5)
+                .tracking(0.3)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             HStack(spacing: 16) {
@@ -98,8 +98,8 @@ struct AdditionalMarketInfoView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12)
-        .background(color.opacity(0.08))
-        .overlay(RoundedRectangle(cornerRadius: 4).stroke(color.opacity(0.25), lineWidth: 1))
+        .background(color.opacity(0.10))
+        .overlay(RoundedRectangle(cornerRadius: 4).stroke(color.opacity(0.30), lineWidth: 1))
         .cornerRadius(4)
     }
 
