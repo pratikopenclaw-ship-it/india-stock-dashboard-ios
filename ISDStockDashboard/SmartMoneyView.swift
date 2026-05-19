@@ -160,7 +160,7 @@ struct SmartMoneyView: View {
     private func ratioBar(buy: Double, sell: Double) -> some View {
         let total = buy + sell
         let buyPct = total > 0 ? buy / total : 0.5
-        GeometryReader { geo in
+        return GeometryReader { geo in
             HStack(spacing: 0) {
                 Rectangle()
                     .fill(Color.isdGreen)
