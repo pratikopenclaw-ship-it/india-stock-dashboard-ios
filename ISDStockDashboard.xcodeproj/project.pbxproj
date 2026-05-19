@@ -1,6 +1,18 @@
 // !$*UTF8*$!
 {
 	archiveVersion = 1;
+		8B1A010B1D00000000000115 /* AIChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A010B1D00000000000015 /* AIChatView.swift */; };
+		8B1A010A1D00000000000115 /* AdditionalMarketInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A010A1D00000000000015 /* AdditionalMarketInfoView.swift */; };
+		8B1A01091D00000000000115 /* TradePlannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A01091D00000000000015 /* TradePlannerView.swift */; };
+		8B1A01081D00000000000115 /* ReportsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A01081D00000000000015 /* ReportsView.swift */; };
+		8B1A01071D00000000000115 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A01071D00000000000015 /* CalendarView.swift */; };
+		8B1A01061D00000000000115 /* Week52View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A01061D00000000000015 /* Week52View.swift */; };
+		8B1A01051D00000000000115 /* SignalAccuracyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A01051D00000000000015 /* SignalAccuracyView.swift */; };
+		8B1A01041D00000000000115 /* OptionsChainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A01041D00000000000015 /* OptionsChainView.swift */; };
+		8B1A01031D00000000000115 /* PaperTradingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A01031D00000000000015 /* PaperTradingView.swift */; };
+		8B1A01021D00000000000115 /* Nifty50View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A01021D00000000000015 /* Nifty50View.swift */; };
+		8B1A01011D00000000000115 /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A01011D00000000000015 /* WebSocketManager.swift */; };
+		8B1A01001D00000000000115 /* KeychainTokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A01001D00000000000015 /* KeychainTokenStore.swift */; };
 	classes = {
 	};
 	objectVersion = 56;
@@ -27,6 +39,11 @@
 		8B1A00121D00000000000012 /* HoldingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A00001D00000000000012 /* HoldingsView.swift */; };
 		8B1A00131D00000000000013 /* InsiderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A00001D00000000000013 /* InsiderView.swift */; };
 		8B1A00141D00000000000014 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A00001D00000000000014 /* ProfileView.swift */; };
+		8B1A00151D00000000000015 /* StockChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A00001D00000000000015 /* StockChartView.swift */; };
+		8B1A00161D00000000000016 /* ScreenerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A00001D00000000000016 /* ScreenerView.swift */; };
+		8B1A00171D00000000000017 /* IPOCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A00001D00000000000017 /* IPOCalendarView.swift */; };
+		8B1A00181D00000000000018 /* SmartMoneyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A00001D00000000000018 /* SmartMoneyView.swift */; };
+		8B1A00191D00000000000019 /* AgentDebateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1A00001D00000000000019 /* AgentDebateView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +67,23 @@
 		8B1A00001D00000000000012 /* HoldingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoldingsView.swift; sourceTree = "<group>"; };
 		8B1A00001D00000000000013 /* InsiderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsiderView.swift; sourceTree = "<group>"; };
 		8B1A00001D00000000000014 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		8B1A00001D00000000000015 /* StockChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockChartView.swift; sourceTree = "<group>"; };
+		8B1A00001D00000000000016 /* ScreenerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenerView.swift; sourceTree = "<group>"; };
+		8B1A00001D00000000000017 /* IPOCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPOCalendarView.swift; sourceTree = "<group>"; };
+		8B1A00001D00000000000018 /* SmartMoneyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartMoneyView.swift; sourceTree = "<group>"; };
+		8B1A00001D00000000000019 /* AgentDebateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift;
+		8B1A010B1D00000000000015 /* AIChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIChatView.swift; sourceTree = "<group>"; };
+		8B1A010A1D00000000000015 /* AdditionalMarketInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalMarketInfoView.swift; sourceTree = "<group>"; };
+		8B1A01091D00000000000015 /* TradePlannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradePlannerView.swift; sourceTree = "<group>"; };
+		8B1A01081D00000000000015 /* ReportsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsView.swift; sourceTree = "<group>"; };
+		8B1A01071D00000000000015 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		8B1A01061D00000000000015 /* Week52View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Week52View.swift; sourceTree = "<group>"; };
+		8B1A01051D00000000000015 /* SignalAccuracyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalAccuracyView.swift; sourceTree = "<group>"; };
+		8B1A01041D00000000000015 /* OptionsChainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsChainView.swift; sourceTree = "<group>"; };
+		8B1A01031D00000000000015 /* PaperTradingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperTradingView.swift; sourceTree = "<group>"; };
+		8B1A01021D00000000000015 /* Nifty50View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nifty50View.swift; sourceTree = "<group>"; };
+		8B1A01011D00000000000015 /* WebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
+		8B1A01001D00000000000015 /* KeychainTokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainTokenStore.swift; sourceTree = "<group>"; }; path = AgentDebateView.swift; sourceTree = "<group>"; };
 		8B1A00FF1D000000000000FF /* ISDStockDashboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ISDStockDashboard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -59,6 +93,18 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
+				8B1A01001D00000000000115 /* KeychainTokenStore.swift in Sources */,
+				8B1A01011D00000000000115 /* WebSocketManager.swift in Sources */,
+				8B1A01021D00000000000115 /* Nifty50View.swift in Sources */,
+				8B1A01031D00000000000115 /* PaperTradingView.swift in Sources */,
+				8B1A01041D00000000000115 /* OptionsChainView.swift in Sources */,
+				8B1A01051D00000000000115 /* SignalAccuracyView.swift in Sources */,
+				8B1A01061D00000000000115 /* Week52View.swift in Sources */,
+				8B1A01071D00000000000115 /* CalendarView.swift in Sources */,
+				8B1A01081D00000000000115 /* ReportsView.swift in Sources */,
+				8B1A01091D00000000000115 /* TradePlannerView.swift in Sources */,
+				8B1A010A1D00000000000115 /* AdditionalMarketInfoView.swift in Sources */,
+				8B1A010B1D00000000000115 /* AIChatView.swift in Sources */,
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
@@ -87,7 +133,24 @@
 				8B1A00001D00000000000012 /* HoldingsView.swift */,
 				8B1A00001D00000000000013 /* InsiderView.swift */,
 				8B1A00001D00000000000014 /* ProfileView.swift */,
+				8B1A00001D00000000000015 /* StockChartView.swift */,
+				8B1A00001D00000000000016 /* ScreenerView.swift */,
+				8B1A00001D00000000000017 /* IPOCalendarView.swift */,
+				8B1A00001D00000000000018 /* SmartMoneyView.swift */,
+				8B1A00001D00000000000019 /* AgentDebateView.swift */,
 			);
+				8B1A01001D00000000000015 /* KeychainTokenStore.swift */,
+				8B1A01011D00000000000015 /* WebSocketManager.swift */,
+				8B1A01021D00000000000015 /* Nifty50View.swift */,
+				8B1A01031D00000000000015 /* PaperTradingView.swift */,
+				8B1A01041D00000000000015 /* OptionsChainView.swift */,
+				8B1A01051D00000000000015 /* SignalAccuracyView.swift */,
+				8B1A01061D00000000000015 /* Week52View.swift */,
+				8B1A01071D00000000000015 /* CalendarView.swift */,
+				8B1A01081D00000000000015 /* ReportsView.swift */,
+				8B1A01091D00000000000015 /* TradePlannerView.swift */,
+				8B1A010A1D00000000000015 /* AdditionalMarketInfoView.swift */,
+				8B1A010B1D00000000000015 /* AIChatView.swift */,
 			path = ISDStockDashboard;
 			sourceTree = "<group>";
 		};
@@ -189,6 +252,11 @@
 				8B1A00121D00000000000012 /* HoldingsView.swift in Sources */,
 				8B1A00131D00000000000013 /* InsiderView.swift in Sources */,
 				8B1A00141D00000000000014 /* ProfileView.swift in Sources */,
+				8B1A00151D00000000000015 /* StockChartView.swift in Sources */,
+				8B1A00161D00000000000016 /* ScreenerView.swift in Sources */,
+				8B1A00171D00000000000017 /* IPOCalendarView.swift in Sources */,
+				8B1A00181D00000000000018 /* SmartMoneyView.swift in Sources */,
+				8B1A00191D00000000000019 /* AgentDebateView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,6 +285,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -301,6 +370,7 @@
 				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

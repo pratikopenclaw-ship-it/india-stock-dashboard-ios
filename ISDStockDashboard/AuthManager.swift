@@ -41,11 +41,22 @@ class AuthManager: ObservableObject {
         isLoading = true
         errorMessage = nil
         do {
-            let user = try await api.login(username: username, password: password)
-            self.currentUser = user
-            self.isAuthenticated = true
+            try await api.login(username: username, password: password)
+            // Login POST succeeded and cookies + bearer token are set.
+            // Now fetch user profile — retry once if cookies need a moment to sync.
+            do {
+                let user = try await api.fetchCurrentUser()
+                self.currentUser = user
+                self.isAuthenticated = true
+                startTokenRefresh()
+            } catch APIError.unauthorized {
+                try await Task.sleep(nanoseconds: 300_000_000)
+                let user = try await api.fetchCurrentUser()
+                self.currentUser = user
+                self.isAuthenticated = true
+                startTokenRefresh()
+            }
             self.isLoading = false
-            startTokenRefresh()
         } catch APIError.unauthorized {
             self.errorMessage = "Invalid username or password"
             self.isLoading = false

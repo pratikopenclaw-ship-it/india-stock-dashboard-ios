@@ -40,7 +40,6 @@ struct AuthView: View {
                     // Form
                     VStack(spacing: 16) {
                         TextField("Username", text: $username)
-                            .textContentType(.username)
                             .autocapitalization(.none)
                             .padding()
                             .background(Color.isdCard)
@@ -50,7 +49,6 @@ struct AuthView: View {
 
                         if isRegistering {
                             TextField("Email", text: $email)
-                                .textContentType(.emailAddress)
                                 .keyboardType(.emailAddress)
                                 .autocapitalization(.none)
                                 .padding()
@@ -60,7 +58,6 @@ struct AuthView: View {
                                 .cornerRadius(6)
 
                             TextField("Full Name", text: $fullName)
-                                .textContentType(.name)
                                 .padding()
                                 .background(Color.isdCard)
                                 .foregroundColor(.isdTextPrimary)
@@ -69,7 +66,6 @@ struct AuthView: View {
                         }
 
                         SecureField("Password", text: $password)
-                            .textContentType(.password)
                             .padding()
                             .background(Color.isdCard)
                             .foregroundColor(.isdTextPrimary)

@@ -30,6 +30,9 @@ class APIClient: ObservableObject {
 
     private let session: URLSession
     private let cookieStorage = HTTPCookieStorage.shared
+    private(set) var accessToken: String? {
+        didSet { try? KeychainTokenStore.save(token: accessToken ?? "") }
+    }
 
     init() {
         let config = URLSessionConfiguration.default
@@ -37,11 +40,12 @@ class APIClient: ObservableObject {
         config.httpCookieAcceptPolicy = .always
         config.httpShouldSetCookies = true
         self.session = URLSession(configuration: config)
+        self.accessToken = KeychainTokenStore.load()
     }
 
     // MARK: - Auth
 
-    func login(username: String, password: String) async throws -> User {
+    func login(username: String, password: String) async throws {
         let url = URL(string: "\(baseURL)/api/auth/login")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -57,7 +61,7 @@ class APIClient: ObservableObject {
         switch httpResponse.statusCode {
         case 200:
             let loginResponse = try JSONDecoder().decode(LoginResponse.self, from: data)
-            return loginResponse.user
+            self.accessToken = loginResponse.access_token
         case 401:
             throw APIError.unauthorized
         default:
@@ -69,6 +73,8 @@ class APIClient: ObservableObject {
     }
 
     func logout() async throws {
+        accessToken = nil
+        KeychainTokenStore.delete()
         let url = URL(string: "\(baseURL)/api/auth/logout")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -332,6 +338,248 @@ class APIClient: ObservableObject {
         return try JSONDecoder().decode(UserProfile.self, from: data)
     }
 
+    // MARK: - Chart
+
+    func fetchStockChart(symbol: String, timeframe: String = "1D") async throws -> StockChartResponse {
+        let encoded = symbol.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? symbol
+        let data = try await get("/api/stock/\(encoded)/chart?timeframe=\(timeframe)")
+        return try JSONDecoder().decode(StockChartResponse.self, from: data)
+    }
+
+    // MARK: - Screener
+
+    func fetchScreenerStocks(
+        recommendation: String? = nil,
+        sector: String? = nil,
+        aiScoreMin: Double? = nil,
+        sortBy: String = "composite_score",
+        page: Int = 1,
+        limit: Int = 50
+    ) async throws -> ScreenerResponse {
+        var components = URLComponents(string: "\(baseURL)/api/screener/stocks")!
+        var queryItems: [URLQueryItem] = [
+            URLQueryItem(name: "sort_by", value: sortBy),
+            URLQueryItem(name: "sort_order", value: "desc"),
+            URLQueryItem(name: "page", value: String(page)),
+            URLQueryItem(name: "limit", value: String(limit))
+        ]
+        if let rec = recommendation { queryItems.append(URLQueryItem(name: "recommendation", value: rec)) }
+        if let sec = sector { queryItems.append(URLQueryItem(name: "sector", value: sec)) }
+        if let score = aiScoreMin { queryItems.append(URLQueryItem(name: "ai_score_min", value: String(score))) }
+        components.queryItems = queryItems
+
+        guard let url = components.url else { throw APIError.invalidURL }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        let data = try await performRequest(request)
+        return try JSONDecoder().decode(ScreenerResponse.self, from: data)
+    }
+
+    func fetchScreenerStats() async throws -> ScreenerQuickStats {
+        let data = try await get("/api/screener/stats")
+        return try JSONDecoder().decode(ScreenerQuickStats.self, from: data)
+    }
+
+    func fetchAIRankings(limit: Int = 50) async throws -> [ScreenerStock] {
+        let data = try await get("/api/screener/ai-rankings?limit=\(limit)")
+        return try JSONDecoder().decode([ScreenerStock].self, from: data)
+    }
+
+    // MARK: - IPO
+
+    func fetchIPOs(category: String, limit: Int = 50) async throws -> IPOListResponse {
+        let data = try await get("/api/ipo/category/\(category)?limit=\(limit)")
+        return try JSONDecoder().decode(IPOListResponse.self, from: data)
+    }
+
+    func fetchIPOStats() async throws -> IPOStatistics {
+        let data = try await get("/api/ipo/analytics/statistics")
+        return try JSONDecoder().decode(IPOStatistics.self, from: data)
+    }
+
+    // MARK: - Smart Money
+
+    func fetchFiiDiiSummary() async throws -> FiiDiiSummary {
+        let data = try await get("/api/fii-dii/summary")
+        return try JSONDecoder().decode(FiiDiiSummary.self, from: data)
+    }
+
+    func fetchBulkDeals(symbol: String? = nil, dealType: String? = nil) async throws -> [BulkDeal] {
+        var components = URLComponents(string: "\(baseURL)/api/bulk-deals")!
+        var queryItems: [URLQueryItem] = []
+        if let symbol = symbol { queryItems.append(URLQueryItem(name: "symbol", value: symbol)) }
+        if let type = dealType { queryItems.append(URLQueryItem(name: "dealType", value: type)) }
+        components.queryItems = queryItems.isEmpty ? nil : queryItems
+
+        guard let url = components.url else { throw APIError.invalidURL }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        let data = try await performRequest(request)
+        let response = try JSONDecoder().decode(BulkDealsResponse.self, from: data)
+        return response.deals
+    }
+
+    // MARK: - NIFTY 50
+
+    func fetchNiftySummary() async throws -> NiftySummary {
+        let data = try await get("/api/nifty")
+        return try JSONDecoder().decode(NiftySummary.self, from: data)
+    }
+
+    // MARK: - Options Chain
+
+    func fetchOptionsChain(symbol: String, expiry: String? = nil) async throws -> OptionsChain {
+        var components = URLComponents(string: "\(baseURL)/api/options/chain/\(symbol)")!
+        if let expiry = expiry {
+            components.queryItems = [URLQueryItem(name: "expiry", value: expiry)]
+        }
+        guard let url = components.url else { throw APIError.invalidURL }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        let data = try await performRequest(request)
+        return try JSONDecoder().decode(OptionsChain.self, from: data)
+    }
+
+    func fetchOptionsExpiryDates(symbol: String) async throws -> [String] {
+        let data = try await get("/api/options/expiry/\(symbol)")
+        let response = try JSONDecoder().decode([String: [String]].self, from: data)
+        return response["expiry_dates"] ?? []
+    }
+
+    // MARK: - Paper Trading
+
+    func fetchPaperPortfolio() async throws -> PaperPortfolio {
+        let data = try await get("/api/paper-trade/portfolio")
+        return try JSONDecoder().decode(PaperPortfolio.self, from: data)
+    }
+
+    func fetchPaperTrades() async throws -> [PaperTrade] {
+        let data = try await get("/api/paper-trade/trades")
+        let response = try JSONDecoder().decode([String: [PaperTrade]].self, from: data)
+        return response["trades"] ?? []
+    }
+
+    func createPaperTrade(symbol: String, action: String, quantity: Double, price: Double, notes: String?) async throws {
+        struct PaperTradeRequest: Encodable {
+            let symbol: String
+            let action: String
+            let quantity: Double
+            let price: Double
+            let notes: String?
+        }
+        let body = PaperTradeRequest(symbol: symbol.uppercased(), action: action, quantity: quantity, price: price, notes: notes)
+        _ = try await post("/api/paper-trade/trades", body: body)
+    }
+
+    func resetPaperPortfolio() async throws {
+        _ = try await post("/api/paper-trade/reset", body: [String: String]())
+    }
+
+    // MARK: - Calendar
+
+    func fetchEarningsCalendar() async throws -> [EarningsEvent] {
+        let data = try await get("/api/calendar/earnings")
+        let response = try JSONDecoder().decode([String: [EarningsEvent]].self, from: data)
+        return response["events"] ?? []
+    }
+
+    // MARK: - 52-Week
+
+    func fetch52WeekData(type: String = "high") async throws -> Week52Response {
+        let data = try await get("/api/52week?type=\(type)")
+        return try JSONDecoder().decode(Week52Response.self, from: data)
+    }
+
+    // MARK: - Reports
+
+    func fetchResearchReports() async throws -> [ResearchReport] {
+        let data = try await get("/api/reports")
+        let response = try JSONDecoder().decode([String: [ResearchReport]].self, from: data)
+        return response["reports"] ?? []
+    }
+
+    // MARK: - Signal Accuracy
+
+    func fetchSignalAccuracy(days: Int = 5) async throws -> SignalAccuracyResponse {
+        let data = try await get("/api/signals/accuracy?days=\(days)")
+        return try JSONDecoder().decode(SignalAccuracyResponse.self, from: data)
+    }
+
+    // MARK: - Trade Planner
+
+    func fetchTradePlanner(symbol: String) async throws -> TradePlan {
+        let encoded = symbol.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? symbol
+        let data = try await get("/api/trade-planner/\(encoded)")
+        return try JSONDecoder().decode(TradePlan.self, from: data)
+    }
+
+    // MARK: - Market Breadth
+
+    func fetchMarketBreadth(index: String = "nifty 50") async throws -> MarketBreadth {
+        let encoded = index.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? index
+        let data = try await get("/api/market/breadth?index=\(encoded)")
+        return try JSONDecoder().decode(MarketBreadth.self, from: data)
+    }
+
+    // MARK: - Stock Detail Enhancements
+
+    func fetchStockSentiment(symbol: String) async throws -> StockSentiment {
+        let encoded = symbol.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? symbol
+        let data = try await get("/api/stock/\(encoded)/sentiment")
+        return try JSONDecoder().decode(StockSentiment.self, from: data)
+    }
+
+    func fetchSupportResistance(symbol: String) async throws -> SupportResistance {
+        let encoded = symbol.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? symbol
+        let data = try await get("/api/stock/\(encoded)/support-resistance")
+        return try JSONDecoder().decode(SupportResistance.self, from: data)
+    }
+
+    func fetchDeepAnalysis(symbol: String) async throws -> DeepAnalysis {
+        let encoded = symbol.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? symbol
+        let data = try await get("/api/stock/\(encoded)/deep-analysis")
+        return try JSONDecoder().decode(DeepAnalysis.self, from: data)
+    }
+
+    // MARK: - Live Price (Polling fallback)
+
+    func fetchLivePrice(symbol: String) async throws -> LivePriceData {
+        let encoded = symbol.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? symbol
+        let data = try await get("/api/kite/prices/unified/\(encoded)")
+        return try JSONDecoder().decode(LivePriceData.self, from: data)
+    }
+
+    // MARK: - Agent Debate
+
+    func fetchAgentHistory(ticker: String? = nil) async throws -> [AgentAnalysisRecord] {
+        var path = "/api/agents/history"
+        if let ticker = ticker {
+            path += "?ticker=\(ticker)"
+        }
+        let data = try await get(path)
+        return try JSONDecoder().decode([AgentAnalysisRecord].self, from: data)
+    }
+
+    func startAgentAnalysis(ticker: String, date: String? = nil) async throws -> AgentJobResponse {
+        struct AnalyzeRequest: Encodable {
+            let ticker: String
+            let date: String?
+        }
+        let body = AnalyzeRequest(ticker: ticker.uppercased(), date: date)
+        let data = try await post("/api/agents/analyze", body: body)
+        return try JSONDecoder().decode(AgentJobResponse.self, from: data)
+    }
+
+    func getAgentJobStatus(jobId: String) async throws -> AgentJobResponse {
+        let data = try await get("/api/agents/job/\(jobId)")
+        return try JSONDecoder().decode(AgentJobResponse.self, from: data)
+    }
+
+    func fetchAgentAccuracy(days: Int = 5) async throws -> AgentAccuracy {
+        let data = try await get("/api/agents/accuracy?days=\(days)")
+        return try JSONDecoder().decode(AgentAccuracy.self, from: data)
+    }
+
     // MARK: - Generic HTTP Methods
 
     private func get(_ path: String) async throws -> Data {
@@ -375,8 +623,13 @@ class APIClient: ObservableObject {
     }
 
     private func performRequest(_ request: URLRequest) async throws -> Data {
+        var req = request
+        if let token = accessToken {
+            req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+
         do {
-            let (data, response) = try await session.data(for: request)
+            let (data, response) = try await session.data(for: req)
 
             guard let httpResponse = response as? HTTPURLResponse else {
                 throw APIError.invalidResponse

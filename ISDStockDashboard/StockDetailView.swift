@@ -10,11 +10,19 @@ struct StockDetailView: View {
     let name: String
 
     @State private var stockDetail: StockDetail?
+    @State private var sentiment: StockSentiment?
+    @State private var srLevels: SupportResistance?
+    @State private var deepAnalysis: DeepAnalysis?
+    @State private var news: [NewsItem] = []
+    @State private var livePrice: LivePriceData?
     @State private var isLoading = true
     @State private var errorMessage: String?
     @State private var showingAddAlert = false
+    @State private var selectedTab = 0
+    @State private var priceUpdateTask: Task<Void, Never>?
 
     private let api = APIClient.shared
+    private let tabs = ["Overview", "Analysis", "News"]
 
     var body: some View {
         ScrollView {
@@ -32,8 +40,19 @@ struct StockDetailView: View {
                 } else if let stock = stockDetail {
                     headerSection(stock)
                     priceSection(stock)
-                    statsGrid(stock)
-                    actionButtons
+                    StockChartView(symbol: symbol)
+
+                    if let sentiment = sentiment {
+                        sentimentSection(sentiment)
+                    }
+
+                    if let sr = srLevels {
+                        supportResistanceSection(sr)
+                    }
+
+                    tabPicker
+
+                    tabContent(stock)
                 }
             }
             .padding()
@@ -94,7 +113,8 @@ struct StockDetailView: View {
     private func priceSection(_ stock: StockDetail) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .lastTextBaseline, spacing: 12) {
-                if let price = stock.current_price {
+                let displayPrice = livePrice?.price ?? stock.current_price
+                if let price = displayPrice {
                     Text(String(format: "₹%.2f", price))
                         .font(.system(size: 48, weight: .bold, design: .monospaced))
                         .foregroundColor(.isdTextPrimary)
@@ -104,7 +124,9 @@ struct StockDetailView: View {
                         .foregroundColor(.isdTextMuted)
                 }
 
-                if let previous = stock.previous_close, let current = stock.current_price {
+                let current = livePrice?.price ?? stock.current_price
+                let previous = stock.previous_close
+                if let previous = previous, let current = current {
                     let change = current - previous
                     let changePercent = (change / previous) * 100
 
@@ -127,6 +149,17 @@ struct StockDetailView: View {
                 .foregroundColor(.isdTextMuted)
                 .tracking(0.3)
             }
+
+            if livePrice != nil {
+                HStack(spacing: 4) {
+                    Circle()
+                        .fill(Color.isdGreen)
+                        .frame(width: 6, height: 6)
+                    Text("LIVE")
+                        .font(.system(size: 9, weight: .medium, design: .monospaced))
+                        .foregroundColor(.isdGreen)
+                }
+            }
         }
         .padding()
         .background(Color.isdCard)
@@ -143,6 +176,260 @@ struct StockDetailView: View {
             StatCard(title: "52W HIGH", value: stock.fifty_two_week_high != nil ? String(format: "₹%.2f", stock.fifty_two_week_high!) : "--")
             StatCard(title: "52W LOW", value: stock.fifty_two_week_low != nil ? String(format: "₹%.2f", stock.fifty_two_week_low!) : "--")
         }
+    }
+
+    private var tabPicker: some View {
+        HStack(spacing: 0) {
+            ForEach(0..<tabs.count, id: \.self) { index in
+                Button {
+                    selectedTab = index
+                } label: {
+                    Text(tabs[index])
+                        .font(.system(size: 13, weight: selectedTab == index ? .semibold : .medium))
+                        .foregroundColor(selectedTab == index ? .isdAccent : .isdTextMuted)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                        .background(selectedTab == index ? Color.isdAccent.opacity(0.10) : Color.clear)
+                }
+            }
+        }
+        .background(Color.isdCard)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
+        .cornerRadius(6)
+    }
+
+    private func tabContent(_ stock: StockDetail) -> some View {
+        Group {
+            switch selectedTab {
+            case 0:
+                statsGrid(stock)
+                actionButtons
+            case 1:
+                analysisTab
+            case 2:
+                newsTab
+            default:
+                EmptyView()
+            }
+        }
+    }
+
+    private var analysisTab: some View {
+        VStack(spacing: 16) {
+            if let analysis = deepAnalysis {
+                deepAnalysisSection(analysis)
+            } else {
+                ContentUnavailableView {
+                    Label("No Analysis", systemImage: "brain")
+                } description: {
+                    Text("Deep analysis not available for this stock")
+                }
+            }
+        }
+    }
+
+    private var newsTab: some View {
+        VStack(spacing: 12) {
+            if news.isEmpty {
+                ContentUnavailableView {
+                    Label("No News", systemImage: "newspaper")
+                } description: {
+                    Text("No recent news for this stock")
+                }
+            } else {
+                ForEach(news.prefix(10)) { item in
+                    NewsRow(item: item)
+                }
+            }
+        }
+    }
+
+    private func sentimentSection(_ sentiment: StockSentiment) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("SENTIMENT")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundColor(.isdTextMuted)
+                .tracking(0.5)
+
+            HStack(spacing: 16) {
+                if let bullish = sentiment.bullish_pct {
+                    sentimentBar(label: "BULLISH", value: bullish, color: .isdGreen)
+                }
+                if let bearish = sentiment.bearish_pct {
+                    sentimentBar(label: "BEARISH", value: bearish, color: .isdRed)
+                }
+                if let neutral = sentiment.neutral_pct {
+                    sentimentBar(label: "NEUTRAL", value: neutral, color: .isdTextMuted)
+                }
+            }
+
+            if let overall = sentiment.overall {
+                HStack {
+                    Text("OVERALL")
+                        .font(.system(size: 10, weight: .medium, design: .monospaced))
+                        .foregroundColor(.isdTextMuted)
+                    Spacer()
+                    Text(overall.uppercased())
+                        .font(.system(size: 13, weight: .bold, design: .monospaced))
+                        .foregroundColor(sentimentColor(overall))
+                }
+            }
+        }
+        .padding()
+        .background(Color.isdCard)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
+        .cornerRadius(6)
+    }
+
+    private func sentimentBar(label: String, value: Double, color: Color) -> some View {
+        VStack(spacing: 4) {
+            Text(label)
+                .font(.system(size: 9, weight: .medium, design: .monospaced))
+                .foregroundColor(.isdTextMuted)
+            Text(String(format: "%.0f%%", value))
+                .font(.system(size: 15, weight: .bold, design: .monospaced))
+                .foregroundColor(color)
+            GeometryReader { geo in
+                RoundedRectangle(cornerRadius: 2)
+                    .fill(color)
+                    .frame(width: geo.size.width * CGFloat(value / 100), height: 4)
+            }
+            .frame(height: 4)
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    private func sentimentColor(_ sentiment: String) -> Color {
+        let lower = sentiment.lowercased()
+        if lower.contains("bull") { return .isdGreen }
+        if lower.contains("bear") { return .isdRed }
+        return .isdGold
+    }
+
+    private func supportResistanceSection(_ sr: SupportResistance) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("SUPPORT & RESISTANCE")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundColor(.isdTextMuted)
+                .tracking(0.5)
+
+            if !sr.resistance_levels.isEmpty {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("RESISTANCE")
+                        .font(.system(size: 10, weight: .medium, design: .monospaced))
+                        .foregroundColor(.isdRed)
+                    ForEach(sr.resistance_levels) { level in
+                        levelRow(level, color: .isdRed)
+                    }
+                }
+            }
+
+            if !sr.support_levels.isEmpty {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("SUPPORT")
+                        .font(.system(size: 10, weight: .medium, design: .monospaced))
+                        .foregroundColor(.isdGreen)
+                    ForEach(sr.support_levels) { level in
+                        levelRow(level, color: .isdGreen)
+                    }
+                }
+            }
+        }
+        .padding()
+        .background(Color.isdCard)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
+        .cornerRadius(6)
+    }
+
+    private func levelRow(_ level: PriceLevel, color: Color) -> some View {
+        HStack {
+            Text(String(format: "₹%.2f", level.price))
+                .font(.system(size: 14, weight: .semibold, design: .monospaced))
+                .foregroundColor(color)
+            Spacer()
+            if let strength = level.strength {
+                Text(strength.uppercased())
+                    .font(.system(size: 9, weight: .medium, design: .monospaced))
+                    .foregroundColor(.isdTextMuted)
+            }
+            if let touches = level.touches {
+                Text("\(touches) touches")
+                    .font(.caption)
+                    .foregroundColor(.isdTextMuted)
+            }
+        }
+    }
+
+    private func deepAnalysisSection(_ analysis: DeepAnalysis) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            if let rec = analysis.recommendation {
+                HStack {
+                    Text("RECOMMENDATION")
+                        .font(.system(size: 10, weight: .medium, design: .monospaced))
+                        .foregroundColor(.isdTextMuted)
+                    Spacer()
+                    Text(rec.uppercased())
+                        .font(.system(size: 14, weight: .bold, design: .monospaced))
+                        .foregroundColor(recColor(rec))
+                }
+            }
+
+            if let conf = analysis.confidence {
+                HStack {
+                    Text("CONFIDENCE")
+                        .font(.system(size: 10, weight: .medium, design: .monospaced))
+                        .foregroundColor(.isdTextMuted)
+                    Spacer()
+                    Text(String(format: "%.0f%%", conf * 100))
+                        .font(.system(size: 14, weight: .bold, design: .monospaced))
+                        .foregroundColor(conf >= 0.7 ? .isdGreen : conf >= 0.5 ? .isdGold : .isdRed)
+                }
+            }
+
+            if let summary = analysis.summary {
+                analysisBlock(title: "SUMMARY", items: [summary])
+            }
+            if let strengths = analysis.strengths {
+                analysisBlock(title: "STRENGTHS", items: strengths)
+            }
+            if let weaknesses = analysis.weaknesses {
+                analysisBlock(title: "WEAKNESSES", items: weaknesses)
+            }
+            if let opportunities = analysis.opportunities {
+                analysisBlock(title: "OPPORTUNITIES", items: opportunities)
+            }
+            if let threats = analysis.threats {
+                analysisBlock(title: "THREATS", items: threats)
+            }
+            if let valuation = analysis.valuation {
+                analysisBlock(title: "VALUATION", items: [valuation])
+            }
+        }
+        .padding()
+        .background(Color.isdCard)
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
+        .cornerRadius(6)
+    }
+
+    private func analysisBlock(title: String, items: [String]) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(title)
+                .font(.system(size: 10, weight: .semibold, design: .monospaced))
+                .foregroundColor(.isdTextMuted)
+                .tracking(0.3)
+            ForEach(items, id: \.self) { item in
+                Text("• \(item)")
+                    .font(.subheadline)
+                    .foregroundColor(.isdTextSecondary)
+            }
+        }
+    }
+
+    private func recColor(_ rec: String) -> Color {
+        let lower = rec.lowercased()
+        if lower.contains("buy") { return .isdGreen }
+        if lower.contains("sell") { return .isdRed }
+        return .isdGold
     }
 
     private var actionButtons: some View {
@@ -170,11 +457,40 @@ struct StockDetailView: View {
         isLoading = true
         errorMessage = nil
         do {
-            stockDetail = try await api.fetchStockDetail(symbol: symbol)
+            async let detail = api.fetchStockDetail(symbol: symbol)
+            async let sent = api.fetchStockSentiment(symbol: symbol)
+            async let sr = api.fetchSupportResistance(symbol: symbol)
+            async let analysis = api.fetchDeepAnalysis(symbol: symbol)
+            async let newsData = api.fetchNews(symbol: symbol)
+
+            stockDetail = try await detail
+            sentiment = try? await sent
+            srLevels = try? await sr
+            deepAnalysis = try? await analysis
+            news = (try? await newsData) ?? []
+
+            startLivePricePolling()
         } catch {
             errorMessage = "Failed to load stock details"
         }
         isLoading = false
+    }
+
+    private func startLivePricePolling() {
+        priceUpdateTask?.cancel()
+        priceUpdateTask = Task {
+            while !Task.isCancelled {
+                do {
+                    let price = try await api.fetchLivePrice(symbol: symbol)
+                    await MainActor.run {
+                        livePrice = price
+                    }
+                } catch {
+                    // Silently fail on polling errors
+                }
+                try? await Task.sleep(nanoseconds: 3_000_000_000) // 3 seconds
+            }
+        }
     }
 
     private func addToWatchlist() async {
@@ -226,6 +542,54 @@ struct StatCard: View {
         .background(Color.isdCard)
         .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.isdBorder, lineWidth: 1))
         .cornerRadius(6)
+    }
+}
+
+struct NewsRow: View {
+    let item: NewsItem
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 8) {
+                Text(item.source)
+                    .font(.system(size: 9, weight: .medium, design: .monospaced))
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 2)
+                    .foregroundColor(.isdAccentLight)
+                    .background(Color.isdAccent.opacity(0.10))
+                    .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color.isdAccent.opacity(0.30), lineWidth: 1))
+                    .cornerRadius(4)
+
+                if let sentiment = item.sentiment {
+                    Text(sentiment.uppercased())
+                        .font(.system(size: 9, weight: .medium, design: .monospaced))
+                        .foregroundColor(sentimentColor(sentiment))
+                }
+
+                Spacer()
+
+                if let date = item.published_at {
+                    Text(date.prefix(10))
+                        .font(.caption)
+                        .foregroundColor(.isdTextMuted)
+                }
+            }
+
+            Text(item.title)
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .foregroundColor(.isdTextPrimary)
+                .lineLimit(3)
+        }
+        .padding(.vertical, 8)
+        .background(Color.isdCard)
+    }
+
+    private func sentimentColor(_ sentiment: String) -> Color {
+        let lower = sentiment.lowercased()
+        if lower.contains("bull") || lower.contains("pos") { return .isdGreen }
+        if lower.contains("bear") || lower.contains("neg") { return .isdRed }
+        return .isdTextMuted
     }
 }
 

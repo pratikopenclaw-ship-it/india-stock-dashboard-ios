@@ -50,6 +50,9 @@ struct HoldingsView: View {
                         holdingsListSection
                         if let corr = correlation {
                             sectorSection(sectors: corr.sectors)
+                            if !corr.correlations.isEmpty {
+                                correlationMatrixSection(corr)
+                            }
                         }
                     }
                 }
@@ -133,6 +136,74 @@ struct HoldingsView: View {
             .padding(.vertical, 8)
             .background(Color.isdCard)
         }
+    }
+
+    private func correlationMatrixSection(_ corr: CorrelationMatrix) -> some View {
+        Section("CORRELATION MATRIX") {
+            VStack(alignment: .leading, spacing: 8) {
+                let symbols = corr.correlations.map { $0.symbol }
+                let cellWidth: CGFloat = max(50, 280 / CGFloat(max(symbols.count + 1, 2)))
+
+                // Header row
+                HStack(spacing: 2) {
+                    Text("")
+                        .font(.system(size: 8, design: .monospaced))
+                        .frame(width: cellWidth, alignment: .center)
+                    ForEach(symbols, id: \.self) { sym in
+                        Text(sym)
+                            .font(.system(size: 8, weight: .medium, design: .monospaced))
+                            .foregroundColor(.isdTextMuted)
+                            .frame(width: cellWidth, alignment: .center)
+                            .lineLimit(1)
+                    }
+                }
+
+                ForEach(corr.correlations) { row in
+                    HStack(spacing: 2) {
+                        Text(row.symbol)
+                            .font(.system(size: 8, weight: .medium, design: .monospaced))
+                            .foregroundColor(.isdTextMuted)
+                            .frame(width: cellWidth, alignment: .center)
+                            .lineLimit(1)
+
+                        ForEach(row.values) { val in
+                            if let c = val.corr {
+                                Text(String(format: "%.2f", c))
+                                    .font(.system(size: 8, design: .monospaced))
+                                    .foregroundColor(correlationColor(c))
+                                    .frame(width: cellWidth, alignment: .center)
+                                    .background(correlationColor(c).opacity(0.08))
+                            } else {
+                                Text("--")
+                                    .font(.system(size: 8, design: .monospaced))
+                                    .foregroundColor(.isdTextMuted)
+                                    .frame(width: cellWidth, alignment: .center)
+                            }
+                        }
+                    }
+                }
+
+                if corr.concentration_warning {
+                    HStack(spacing: 4) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundColor(.isdGold)
+                            .font(.caption)
+                        Text("Concentration warning: max sector \(String(format: "%.1f%%", corr.max_sector_pct))")
+                            .font(.caption)
+                            .foregroundColor(.isdGold)
+                    }
+                }
+            }
+            .padding(.vertical, 8)
+            .background(Color.isdCard)
+        }
+    }
+
+    private func correlationColor(_ corr: Double) -> Color {
+        if corr >= 0.7 { return .isdRed }
+        if corr >= 0.3 { return .isdGold }
+        if corr <= -0.3 { return .isdGreen }
+        return .isdTextSecondary
     }
 
     private func loadHoldings() async {
