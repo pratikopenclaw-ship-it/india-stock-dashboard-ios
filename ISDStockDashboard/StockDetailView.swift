@@ -132,7 +132,7 @@ struct StockDetailView: View {
 
                     HStack(spacing: 4) {
                         Image(systemName: change >= 0 ? "arrow.up" : "arrow.down")
-                        Text(String(format: "%.2f (%.2f%%)", change, changePercent))
+                        Text(String(format: "%+.2f (%+.2f%%)", change, changePercent))
                     }
                     .font(.system(size: 17, weight: .semibold, design: .monospaced))
                     .foregroundStyle(Color.profitLossColor(change))

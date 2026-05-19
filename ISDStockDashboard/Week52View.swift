@@ -95,11 +95,11 @@ struct Week52Row: View {
                         .foregroundColor(.isdTextPrimary)
                 }
                 if type == "high", let dist = stock.distance_from_high {
-                    Text(String(format: "%.1f%% from high", dist))
+                    Text(String(format: "%+.1f%% from high", dist))
                         .font(.system(size: 11, weight: .semibold, design: .monospaced))
                         .foregroundColor(.isdRed)
                 } else if type == "low", let dist = stock.distance_from_low {
-                    Text(String(format: "%.1f%% from low", dist))
+                    Text(String(format: "%+.1f%% from low", dist))
                         .font(.system(size: 11, weight: .semibold, design: .monospaced))
                         .foregroundColor(.isdGreen)
                 }

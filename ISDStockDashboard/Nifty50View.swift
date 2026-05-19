@@ -96,7 +96,7 @@ struct Nifty50View: View {
 
                         Spacer()
 
-                        Text(String(format: "%.2f%%", sector.change_percent))
+                        Text(String(format: "%+.2f%%", sector.change_percent))
                             .font(.system(size: 13, weight: .semibold, design: .monospaced))
                             .foregroundStyle(Color.profitLossColor(sector.change_percent))
                     }

@@ -135,7 +135,7 @@ struct HoldingsView: View {
 
                         Spacer()
 
-                        Text(String(format: "₹%.2f (%.1f%%)", sector.value, sector.pct))
+                        Text(String(format: "₹%.2f (%+.1f%%)", sector.value, sector.pct))
                             .font(.system(size: 11, weight: .semibold, design: .monospaced))
                             .foregroundColor(.isdTextPrimary)
                     }

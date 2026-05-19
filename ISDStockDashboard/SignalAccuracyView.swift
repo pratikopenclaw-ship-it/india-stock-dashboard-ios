@@ -128,7 +128,7 @@ struct SignalAccuracyView: View {
                         }
                         Spacer()
                         VStack(alignment: .trailing, spacing: 2) {
-                            Text(String(format: "%.2f%%", result.pct_change))
+                            Text(String(format: "%+.2f%%", result.pct_change))
                                 .font(.system(size: 13, weight: .semibold, design: .monospaced))
                                 .foregroundStyle(Color.profitLossColor(result.pct_change))
                             Image(systemName: result.correct ? "checkmark.circle.fill" : "xmark.circle.fill")

@@ -93,7 +93,7 @@ struct PaperTradingView: View {
                     .foregroundColor(.isdTextMuted)
                     .tracking(0.3)
                 Spacer()
-                Text(String(format: "%.2f%%", pf.pnl_percent))
+                Text(String(format: "%+.2f%%", pf.pnl_percent))
                     .font(.system(size: 15, weight: .bold, design: .monospaced))
                     .foregroundStyle(Color.profitLossColor(pf.pnl_percent))
             }
@@ -124,7 +124,7 @@ struct PaperTradingView: View {
                                             .font(.system(size: 13, weight: .semibold, design: .monospaced))
                                             .foregroundColor(.isdTextPrimary)
                                     }
-                                    Text(String(format: "%.2f%%", pnl))
+                                    Text(String(format: "%+.2f%%", pnl))
                                         .font(.system(size: 12, weight: .medium, design: .monospaced))
                                         .foregroundStyle(Color.profitLossColor(pnl))
                                 }

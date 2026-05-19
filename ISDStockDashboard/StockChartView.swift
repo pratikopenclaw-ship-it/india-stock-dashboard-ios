@@ -112,7 +112,7 @@ struct StockChartView: View {
                     Text("CHANGE")
                         .font(.system(size: 9, weight: .medium, design: .monospaced))
                         .foregroundColor(.isdTextMuted)
-                    Text(String(format: "%+.2f (%.2f%%)", change, changePct))
+                    Text(String(format: "%+.2f (%+.2f%%)", change, changePct))
                         .font(.system(size: 12, weight: .semibold, design: .monospaced))
                         .foregroundColor(change >= 0 ? .isdGreen : .isdRed)
                 }

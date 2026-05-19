@@ -188,7 +188,7 @@ struct PromoterRow: View {
                 HStack(spacing: 2) {
                     Image(systemName: item.trendDirection == "UP" ? "arrow.up" : "arrow.down")
                         .font(.caption2)
-                    Text(String(format: "%.1f%%", item.trendPercentage))
+                    Text(String(format: "%+.1f%%", item.trendPercentage))
                         .font(.system(size: 11, weight: .medium, design: .monospaced))
                 }
                 .foregroundColor(item.trendDirection == "UP" ? .isdGreen : .isdRed)
