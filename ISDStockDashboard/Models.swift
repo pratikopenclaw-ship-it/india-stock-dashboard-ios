@@ -594,7 +594,7 @@ struct PaperPortfolio: Codable {
 }
 
 struct PaperPosition: Codable, Identifiable {
-    let id: String { symbol }
+    var id: String { symbol }
     let symbol: String
     let quantity: Double
     let avg_price: Double
